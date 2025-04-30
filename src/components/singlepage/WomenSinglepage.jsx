@@ -3,56 +3,51 @@ import Outlet from "../Outlet";
 import { useParams } from "react-router-dom";
 // Your brands array
 const brands = [
-  {
-    id: 1,
-    image:
-      "https://i5.walmartimages.com/asr/c33bb859-28b0-48cb-a10c-f875059fd86a_1.d6d7413a3f0147ff6abfebc0a824b8ac.jpeg",
-    brand: "DKNY",
-    offer: "MIN. 20% OFF",
-  },
-  {
-    id: 2,
-    image:
-      "https://img.ltwebstatic.com/images3_pi/2023/11/27/e1/17010663920250ac3b9a2f8de469937d15cfe503dd_thumbnail_900x.webp",
-    brand: "Just Cavalli",
-    offer: "MIN. 20% OFF",
-        price:"2800"
-  },
-  {
-    id: 3,
-    image:
-      "https://img.kwcdn.com/product/1dec4a0c30/8c4a729e-ea1f-4ca3-881e-d61eff8ca570_1339x1785.jpeg?imageView2/2/w/500/q/70/format/webp",
-    brand: "GUESS",
-    offer: "MIN. 30% OFF",
-        price:"700"
-  },
-  {
-    id: 4,
-    image:
-      "https://i5.walmartimages.com/seo/Mens-Formal-Shirts-Long-Sleeve-Irregular-Button-Up-Dress-Shirt-Regular-Fit-Casual-Fashion-Solid-Color-Shirt-Tops_d415df83-2c8f-4418-9c91-afff5e3be7b7.7f3a53c0280bbc8a389dca3a9c69f75e.jpeg",
-    brand: "Polo Ralph Lauren",
-    offer: "FLAT 40% OFF",
-        price:"9000"
-  },
-  {
-    id: 5,
-    image:
-      "https://www.brooktaverner.com/image_cache/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/e/s/este-white_-fabian-navy-check.jpg",
-    brand: "Fred Perry",
-    offer: "UP TO 40% OFF",
-        price:"670"
-  },
-  {
-    id: 6,
-    image:
-      "https://th.bing.com/th/id/OIP.aHaPWNhatkg_ssHZpBfdiwHaLH?rs=1&pid=ImgDetMain",
-    brand: "The Collective",
-    offer: "FLAT 40% OFF",
-      price:"570"
-  },
-];
+    {
+      id: 20,
+      image: "https://m.media-amazon.com/images/I/6143d3r6D0L._AC_UL480_FMwebp_QL65_.jpg",
+      brand: "DKNY",
+      offer: "MIN. 20% OFF",
+            price:"700"
+    },
+    {
+      id: 21,
+      image: "https://m.media-amazon.com/images/I/81DRk+I9w4L._AC_UL480_FMwebp_QL65_.jpg",
+      brand: "Just Cavalli",
+      offer: "MIN. 20% OFF",
+            price:"800"
+    },
+    {
+      id: 23,
+      image: "https://m.media-amazon.com/images/I/513zpgXL98L._AC_UL480_FMwebp_QL65_.jpg",
+      brand: "GUESS",
+      offer: "MIN. 30% OFF",
+            price:"500"
+    },
+    {
+      id: 24,
+      image: "https://m.media-amazon.com/images/I/714nEfpvyqL._AC_UL480_FMwebp_QL65_.jpg",
+      brand: "Polo Ralph Lauren",
+      offer: "FLAT 40% OFF",
+      price:"400"
+    },
+    {
+      id: 25,
+      image: "https://m.media-amazon.com/images/I/51RmqXyesGL._AC_UL480_FMwebp_QL65_.jpg",
+      brand: "Fred Perry",
+      offer: "UP TO 40% OFF",
+            price:"600"
+    },
+    {
+      id: 26,
+      image: "https://m.media-amazon.com/images/I/71GxB8DJLyL._AC_UL480_FMwebp_QL65_.jpg",
+      brand: "The Collective",
+      offer: "FLAT 40% OFF",
+      price:"500"
+    },
+  ];
 
-const MenSinglepage = () => {
+const WomenSinglepage = () => {
   const { id } = useParams();
 
   //   console.log(parseInt(id));
@@ -73,7 +68,7 @@ const MenSinglepage = () => {
               <img
                 src={product.image}
                 alt={product.brand}
-                className="w-52 h-80 object-cover"
+                className="w-52 h-96 "
               />
             </div>
 
@@ -115,4 +110,4 @@ const MenSinglepage = () => {
   );
 };
 
-export default MenSinglepage;
+export default WomenSinglepage;

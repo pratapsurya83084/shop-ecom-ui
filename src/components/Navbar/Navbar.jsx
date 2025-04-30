@@ -25,6 +25,7 @@ const Menu = [
     name: "Electronics",
     link: "/#",
   },
+
 ];
 
 const DropdownLinks = [
@@ -83,7 +84,7 @@ const showHamburger=()=>{
             {/* order button */}
             <button
               onClick={() => handleOrderPopup()}
-              className="bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full flex items-center gap-3 group"
+              className="hidden md:flex  bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full  items-center gap-3 group"
             >
               <span className="group-hover:block hidden transition-all duration-200">
                 Order
@@ -95,6 +96,12 @@ const showHamburger=()=>{
             <div>
               <DarkMode />
             </div>
+            <Link to="/login">
+            <div>
+              <button className="bg-orange-500 text-md rounded text-white font-bold px-1 sm:px-3 py-1">Login</button>
+            </div>
+            </Link>
+           
           </div>
         </div>
       </div>
@@ -123,6 +130,13 @@ const showHamburger=()=>{
                 className="inline-block px-4 hover:text-primary duration-200"
               >
              electronics
+              </Link>
+            </li>
+            <li>
+              <Link  to="/women"
+                className="inline-block px-4 hover:text-primary duration-200"
+              >
+             Womens
               </Link>
             </li>
           {/* ))} */}

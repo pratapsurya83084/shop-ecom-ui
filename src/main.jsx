@@ -4,9 +4,10 @@ import App from "./App.jsx";
 import "./index.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <GoogleOAuthProvider clientId="1088716956562-e5lspq26mt4a0vaodpq0v91ec8flo86i.apps.googleusercontent.com">
+  <App />
+</GoogleOAuthProvider>
 );

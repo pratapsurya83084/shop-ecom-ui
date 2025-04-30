@@ -63,7 +63,7 @@ console.log(newArray);
             {/* Product Details */}
             <div className="flex flex-col justify-center">
               <h1 className="text-3xl font-bold mb-4">{product.brand}</h1>
-              <p className="text-2xl text-indigo-600 font-semibold mb-6">{product.offer}</p>
+              <p className="text-2xl text-red-600 font-semibold mb-6">{product.offer}</p>
               <p className="text-gray-600 mb-6">
                 This product is made with high-quality materials and offers you the best comfort and style.
               </p>
@@ -84,7 +84,7 @@ console.log(newArray);
               </div>
 
               {/* Add to Cart */}
-              <button className="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300">
+              <button className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
                 Add to Cart
               </button>
             </div>
