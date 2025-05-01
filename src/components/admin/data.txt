@@ -1,0 +1,2 @@
+admin email=pratapsuryawanshi{realemail}@gmail.com
+password = pratap{realemail}

@@ -1,0 +1,129 @@
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const mockData = [
+        {
+          id: 1,
+          name: 'Product 1',
+          description: 'Description 1',
+          price: 29.99,
+          image: 'https://via.placeholder.com/150',
+          status: 'In Stock',
+        },
+        {
+          id: 2,
+          name: 'Product 2',
+          description: 'Description 2',
+          price: 39.99,
+          image: 'https://via.placeholder.com/150',
+          status: 'Out of Stock',
+        },
+        {
+          id: 3,
+          name: 'Product 3',
+          description: 'Description 3',
+          price: 19.99,
+          image: 'https://via.placeholder.com/150',
+          status: 'In Stock',
+        },
+      ];
+      setProducts(mockData);
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleDelete = (id) => {
+    const filtered = products.filter((p) => p.id !== id);
+    setProducts(filtered);
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">Product Management</h1>
+
+      <div className="flex justify-end mb-4">
+        <Link
+          to="/add-product"
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+        >
+          Add New Product
+        </Link>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
+            <tr>
+              <th className="p-4">Image</th>
+              <th className="p-4">Name</th>
+              <th className="p-4">Description</th>
+              <th className="p-4">Price</th>
+              <th className="p-4">Status</th>
+              <th className="p-4">Edit</th>
+              <th className="p-4">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.length > 0 ? (
+              products.map((product) => (
+                <tr key={product.id} className="border-t text-sm hover:bg-gray-50">
+                  <td className="p-4">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                  </td>
+                  <td className="p-4 font-medium">{product.name}</td>
+                  <td className="p-4 text-gray-600">{product.description}</td>
+                  <td className="p-4 font-semibold">${product.price}</td>
+                  <td className="p-4">
+                    <span
+                      className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
+                        product.status === 'In Stock'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
+                      {product.status}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <Link
+                      to={`/edit-product/${product.id}`}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                    >
+                      Edit
+                    </Link>
+                  </td>
+                  <td className="p-4">
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="p-4 text-center text-gray-500">
+                  No products found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default Products;

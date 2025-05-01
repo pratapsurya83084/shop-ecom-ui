@@ -17,6 +17,8 @@ import BestSellingSinglepage from "./components/singlepage/BestSellingSinglepage
 import TopratedSinglepage from "./components/singlepage/TopratedSinglepage";
 import Login from "./components/user/Login";
 import Signup  from './components/user/Signup';
+import DashBoard from "./components/admin/DashBoard";
+import ProtectRoute from "./components/admin/ProtectRoute";
 
 const App = () => {
   return (
@@ -41,6 +43,14 @@ const App = () => {
         <Route  path="/TrendingSinglepage/:id" element={<TrendingSinglepage />}/>
         <Route  path="/bestSelinglePage/:id" element={<BestSellingSinglepage />}/>
         <Route  path="/toprated-Singlepage/:id" element={<TopratedSinglepage />}/>
+       
+        <Route  path="/dashboard" element={ <ProtectRoute> <DashBoard />   </ProtectRoute>}/>
+      
+      
+
+
+
+
       </Routes>
     </Routers>
   );

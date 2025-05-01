@@ -11,7 +11,7 @@ import { list, parse } from "postcss";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
-
+import AdminLogin from "../admin/AdminLogin";
 
 const Menu = [
   {
@@ -50,7 +50,13 @@ const DropdownLinks = [
 ];
 
 const Navbar = ({ handleOrderPopup }) => {
+  const [showModal, setShowModal] = useState(false);
+
   const [isOpen, setIsOpen] = useState(false);
+
+const adminCookie =Cookies.get("adminToken")
+// console.log(adminCookie);
+
 const navigate = useNavigate();
   const [user, setUser] = useState();
 
@@ -130,12 +136,34 @@ const navigate = useNavigate();
       {/* upper Navbar */}
       <div className="bg-primary/40 py-2">
         <div className="container flex justify-between items-center">
-          <div>
+          <div className="flex">
             {/* add link  */}
             <Link to="/" className="font-bold text-2xl sm:text-3xl flex gap-2">
               <img src={Logo} alt="Logo" className="w-10" />
               Shopsy
             </Link>
+
+            {/* admin name */}
+       {
+        adminCookie? <div className="px-2 mt-2"> <Link to="/dashboard">Dashboard </Link></div>
+      :
+      (
+        <div>
+        <ul className="hidden md:flex p-2 md:ml-40">
+          <li
+            className="list-none cursor-pointer underline"
+            onClick={() => setShowModal(true)}
+          >
+            adminLogin
+          </li>
+        </ul>
+  
+        <AdminLogin isOpen={showModal} onClose={() => setShowModal(false)} />
+      </div>
+      )
+       }
+           
+
           </div>
 
           {/* search bar */}
