@@ -20,20 +20,39 @@ const BannerImg = {
 
 const FooterLinks = [
   {
+    title: "Kids Wear",
+    link: "/kids",
+  },
+  {
+    title: "Mens",
+    link: "/mens",
+  },
+  {
+    title: "electronics",
+    link: "/electronics",
+  },
+  {
+    title: "Womens",
+    link: "/women",
+  },
+];
+
+const Footerlist = [
+  {
     title: "Home",
-    link: "/#",
+    link: "/",
   },
   {
     title: "About",
-    link: "/#about",
+    link: "/about",
   },
   {
-    title: "Contact",
-    link: "/#contact",
+    title: "FAQ",
+    link: "/faq",
   },
   {
     title: "Blog",
-    link: "/#blog",
+    link: "/blog",
   },
 ];
 
@@ -49,8 +68,9 @@ const Footer = () => {
               Shopsy
             </h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum in
-              beatae ea recusandae blanditiis veritatis.
+            "Shop with confidence and enjoy fast shipping, easy returns, and exceptional customer service."
+
+
             </p>
           </div>
 
@@ -79,7 +99,7 @@ const Footer = () => {
                   Links
                 </h1>
                 <ul className="flex flex-col gap-3">
-                  {FooterLinks.map((link) => (
+                  {Footerlist.map((link) => (
                     <li
                       className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
                       key={link.title}
