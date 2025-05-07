@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext ,useState} from "react";
 import {
   BarChart3,
   Package,
@@ -14,6 +14,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+import ContextProvider from "../context/ContextProvider";
 
 const data = [
   { date: "22 Jul", income: 1000 },
@@ -61,6 +63,8 @@ const Card = ({ title, value, icon: Icon, color }) => (
 );
 
 const AdminDashboard = () => {
+  // const {Users} = useContext(ContextProvider);
+  // console.log(Users?Users.length:"0");
   return (
     <div className="min-h-screen bg-gray-100 p-6 space-y-8">
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
@@ -81,7 +85,7 @@ const AdminDashboard = () => {
         />
         <Card
           title="Customers"
-          value="892"
+          value={`${Users?Users.length:""}`}
           icon={Users}
           color="bg-blue-500"
         />
