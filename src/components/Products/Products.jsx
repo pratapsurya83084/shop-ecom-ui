@@ -4,6 +4,7 @@ import Img2 from "../../assets/women/women2.jpg";
 import Img3 from "../../assets/women/women3.jpg";
 import Img4 from "../../assets/women/women4.jpg";
 import { FaStar } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const ProductsData = [
   {
@@ -57,17 +58,18 @@ const Products = () => {
           <p data-aos="fade-up" className="text-sm text-primary">
             Top Selling Products for you
           </p>
-          <h1 data-aos="fade-up" className="text-3xl font-bold">
+          <h1 data-aos="fade-up" className="text-3xl font-bold mt-2">
             Products
           </h1>
-          <p data-aos="fade-up" className="text-xs text-gray-400">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit
-            asperiores modi Sit asperiores modi
+          <p data-aos="fade-up" className="text-xs text-gray-400 p-4">
+            "Our top-selling e-commerce app delivers a seamless shopping
+            experience with fast checkout, personalized recommendations, and
+            real-time order tracking—trusted by millions of users worldwide."
           </p>
         </div>
         {/* Body section */}
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center justify-center  gap-5">
             {/* card section */}
             {ProductsData.map((data) => (
               <div
@@ -94,9 +96,12 @@ const Products = () => {
           </div>
           {/* view all button */}
           <div className="flex justify-center">
-            <button className="text-center mt-10 cursor-pointer bg-primary text-white py-1 px-5 rounded-md">
-              View All Button
-            </button>
+            <Link to="/allproducts">
+              {" "}
+              <button className="text-center mt-10 cursor-pointer bg-primary text-white py-1 px-5 rounded-md">
+                View All
+              </button>{" "}
+            </Link>
           </div>
         </div>
       </div>

@@ -54,10 +54,17 @@ const Navbar = ({ handleOrderPopup }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-const adminCookie =Cookies.get("adminToken")
-// console.log(adminCookie);
+  const [search, setSearch] = useState("");
 
-const navigate = useNavigate();
+  const SearchProd = (e) => {
+    e.preventDefault();
+    console.log(search);
+  };
+
+  const adminCookie = Cookies.get("adminToken");
+  // console.log(adminCookie);
+
+  const navigate = useNavigate();
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -80,7 +87,7 @@ const navigate = useNavigate();
       if (logoutUser.data.success == true) {
         toast.success(logoutUser.data.message);
         localStorage.removeItem("googleAuth");
-        navigate('/login')
+        navigate("/login");
       } else {
         toast.success("logout failed");
       }
@@ -88,7 +95,6 @@ const navigate = useNavigate();
       console.log("failed logout : ", error);
     }
 
-   
     // window.location.reload(); // or navigate to login page
   };
 
@@ -115,19 +121,15 @@ const navigate = useNavigate();
       console.log(" logout formlogin :", logoutUser.data);
       if (logoutUser.data.status == true) {
         toast.success(logoutUser.data.message);
-        
-          navigate("/login");
-          localStorage.removeItem("formloginData");
-        
+
+        navigate("/login");
+        localStorage.removeItem("formloginData");
       } else {
         toast.error("logout failed");
       }
     } catch (error) {
       console.log("failed logout : ", error);
-    }
-
-    
-    ; // or navigate to login page
+    } // or navigate to login page
   };
 
   return (
@@ -144,36 +146,43 @@ const navigate = useNavigate();
             </Link>
 
             {/* admin name */}
-       {
-        adminCookie? <div className="px-2 mt-2"> <Link to="/dashboard">Dashboard </Link></div>
-      :
-      (
-        <div>
-        <ul className="hidden md:flex p-2 md:ml-40">
-          <li
-            className="list-none cursor-pointer underline"
-            onClick={() => setShowModal(true)}
-          >
-            adminLogin
-          </li>
-        </ul>
-  
-        <AdminLogin isOpen={showModal} onClose={() => setShowModal(false)} />
-      </div>
-      )
-       }
-           
+            {adminCookie ? (
+              <div className="px-2 mt-2">
+                {" "}
+                <Link to="/dashboard">Dashboard </Link>
+              </div>
+            ) : (
+              <div>
+                <ul className="hidden md:flex p-2 md:ml-40">
+                  <li
+                    className="list-none cursor-pointer underline"
+                    onClick={() => setShowModal(true)}
+                  >
+                    adminLogin
+                  </li>
+                </ul>
 
+                <AdminLogin
+                  isOpen={showModal}
+                  onClose={() => setShowModal(false)}
+                />
+              </div>
+            )}
           </div>
 
           {/* search bar */}
           <div className="flex justify-between items-center gap-4">
             <div className="relative group hidden sm:block">
-              <input
-                type="text"
-                placeholder="search"
-                className="w-[200px] sm:w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-2 py-1 focus:outline-none focus:border-1 focus:border-primary dark:border-gray-500 dark:bg-gray-800  "
-              />
+              <form onSubmit={SearchProd}>
+                <input
+                  type="text"
+                  placeholder="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-[200px] sm:w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-2 py-1 focus:outline-none focus:border-1 focus:border-primary dark:border-gray-500 dark:bg-gray-800  "
+                />
+              </form>
+
               <IoMdSearch className="text-gray-500 group-hover:text-primary absolute top-1/2 -translate-y-1/2 right-3" />
             </div>
 

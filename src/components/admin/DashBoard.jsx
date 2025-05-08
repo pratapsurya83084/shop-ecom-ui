@@ -8,46 +8,47 @@ import {
   Menu,
   X,
   ShoppingCart,
-  
   Users,
   BarChart3,
   Boxes,
   BadgePercent,
   MessageSquareText,
 } from "lucide-react";
-import AdminSetting   from './AdminSetting';
-import Products  from './Products';
+import AdminSetting from "./AdminSetting";
+import Products from "./Products";
 import AddProduct from "./AddProduct";
 import GetAllProducts from "./GetAllProducts.jsx";
 import AllUsers from "./AllUsers.jsx";
 import AllOrders from "./AllOrders.jsx";
 import ContextProvider from "../context/ContextProvider.jsx";
+import AnalyticsPage from "./AnalyticsPage .jsx";
+import ReviewUsers from "./ReviewUsers.jsx";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-const {Users} = useContext(ContextProvider);
-console.log(Users);
+  const { Users } = useContext(ContextProvider);
+  console.log(Users);
 
   const renderContent = () => {
     switch (activeSection) {
       case "dashboard":
         return <AdminDashboard />;
-       
-        case "Addproducts":
-          return <AddProduct/>;
-          case "AllproductsList":
-            return <GetAllProducts/>;
+
+      case "Addproducts":
+        return <AddProduct />;
+      case "AllproductsList":
+        return <GetAllProducts />;
       case "Orders":
-        return <AllOrders/>;
+        return <AllOrders />;
       case "Users":
-        return <AllUsers/>
+        return <AllUsers />;
       case "Analytics":
-        return <h2 className="text-2xl font-semibold">Analytics Page</h2>;
+        return <AnalyticsPage />;
       case "Reviews":
-        return <h2 className="text-2xl font-semibold">Reviews Page</h2>;
-        case "settings":
-            return <AdminSetting/>
+        return <ReviewUsers />;
+      case "settings":
+        return <AdminSetting />;
       default:
         return <h2>Select a section</h2>;
     }
@@ -103,20 +104,20 @@ const SidebarContent = ({ onSelect, activeSection }) => (
       active={activeSection === "dashboard"}
       onClick={() => onSelect("dashboard")}
     />
-    
+
     <SidebarItem
       icon={<ShoppingCart size={20} />}
       label="Orders"
       active={activeSection === "Orders"}
       onClick={() => onSelect("Orders")}
     />
-     <SidebarItem
+    <SidebarItem
       icon={<Package size={20} />}
       label="Addproducts"
       active={activeSection === "Addproducts"}
       onClick={() => onSelect("Addproducts")}
     />
-     <SidebarItem
+    <SidebarItem
       icon={<ShoppingCart size={20} />}
       label="AllproductsList"
       active={activeSection === "AllproductsList"}

@@ -3,6 +3,7 @@ import Img1 from "../../assets/shirt/shirt.png";
 import Img2 from "../../assets/shirt/shirt2.png";
 import Img3 from "../../assets/shirt/shirt3.png";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ProductsData = [
   {
@@ -27,7 +28,7 @@ const ProductsData = [
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
 ];
-const TopProducts = ({ handleOrderPopup }) => {
+const TopProducts = () => {
   return (
     <div>
       <div className="container">
@@ -46,8 +47,8 @@ const TopProducts = ({ handleOrderPopup }) => {
         </div>
         {/* Body section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 md:gap-5 place-items-center">
-          {ProductsData.map((data) => (
-            <div
+          {ProductsData.map((data ,i) => (
+            <div key={i}
               data-aos="zoom-in"
               className="rounded-2xl bg-white dark:bg-gray-800 hover:bg-black/80 dark:hover:bg-primary hover:text-white relative shadow-xl duration-300 group max-w-[300px]"
             >
@@ -72,12 +73,14 @@ const TopProducts = ({ handleOrderPopup }) => {
                 <p className="text-gray-500 group-hover:text-white duration-300 text-sm line-clamp-2">
                   {data.description}
                 </p>
-                <button
+               <Link to="allproducts">
+               <button
                   className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-white group-hover:text-primary"
-                  onClick={handleOrderPopup}
+                  // onClick={handleOrderPopup}
                 >
                   Order Now
                 </button>
+               </Link>
               </div>
             </div>
           ))}

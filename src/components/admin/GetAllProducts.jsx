@@ -50,7 +50,7 @@ const GetAllProducts = () => {
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{product.title}</td>
                 <td className="px-4 py-2">{product.category}</td>
-                <td className="px-4 py-2">${product.price}</td>
+                <td className="px-4 py-2">₹.{product.price}</td>
                 <td className="px-4 py-2">{product.qty}</td>
                 <td className="px-4 py-2">
                   <img src={product.imgsrc} alt="product" className="w-16 h-16 object-cover rounded" />

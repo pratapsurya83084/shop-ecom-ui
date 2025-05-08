@@ -2,8 +2,8 @@ import React from "react";
 import Image1 from "../../assets/hero/women.png";
 import Image2 from "../../assets/hero/shopping.png";
 import Image3 from "../../assets/hero/sale.png";
-import Slider from "react-slick";   // for slider
-
+import Slider from "react-slick"; // for slider
+import { Link } from "react-router-dom";
 
 // npm install aos  = aos stands for (Animate On Scroll)  this module is used for animation when scroll and then zoom-in ,fade-up,fade-in very good moduele.
 
@@ -31,9 +31,7 @@ const ImageList = [
   },
 ];
 
-
-
-const Hero = ({ handleOrderPopup }) => {
+const Hero = () => {
   var settings = {
     dots: true,
     arrows: false,
@@ -54,13 +52,13 @@ const Hero = ({ handleOrderPopup }) => {
       {/* hero section */}
       <div className="container pb-8 sm:pb-0">
         <Slider {...settings}>
-          {ImageList.map((data) => (
-            <div>
+          {ImageList.map((data,i) => (
+            <div key={i} >
               <div className="grid grid-cols-1 sm:grid-cols-2">
                 {/* text content section */}
                 <div className="flex flex-col justify-center gap-4 pt-12 sm:pt-0 text-center sm:text-left order-2 sm:order-1 relative z-10">
                   <h1
-                     // animation classes 
+                    // animation classes
                     data-aos="zoom-out"
                     data-aos-duration="500"
                     data-aos-once="true"
@@ -69,7 +67,7 @@ const Hero = ({ handleOrderPopup }) => {
                     {data.title}
                   </h1>
                   <p
-                     // animation classes 
+                    // animation classes
                     data-aos="fade-up"
                     data-aos-duration="500"
                     data-aos-delay="100"
@@ -78,23 +76,25 @@ const Hero = ({ handleOrderPopup }) => {
                     {data.description}
                   </p>
                   <div
-                  // animation classes 
+                    // animation classes
                     data-aos="fade-up"
                     data-aos-duration="500"
                     data-aos-delay="300"
                   >
-                    <button
-                      onClick={handleOrderPopup}
-                      className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
-                    >
-                      Order Now
-                    </button>
+                    <Link to="/allproducts">
+                      <button
+                        // onClick={handleOrderPopup}
+                        className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
+                      >
+                        Order Now
+                      </button>
+                    </Link>
                   </div>
                 </div>
                 {/* image section */}
                 <div className="order-1 sm:order-2">
                   <div
-                     // animation classes 
+                    // animation classes
                     data-aos="zoom-in"
                     data-aos-once="true"
                     className="relative z-10"

@@ -18,14 +18,20 @@ import {
 import ContextProvider from "../context/ContextProvider";
 
 const data = [
-  { date: "22 Jul", income: 1000 },
-  { date: "23 Jul", income: 5000 },
-  { date: "24 Jul", income: 2000 },
-  { date: "25 Jul", income: 8000 },
-  { date: "26 Jul", income: 10000 },
-  { date: "27 Jul", income: 6000 },
-  { date: "28 Jul", income: 9000 },
+  { month: "Jan", income: 1000 },
+  { month: "Feb", income: 5000 },
+  { month: "Mar", income: 2000 },
+  { month: "Apr", income: 8000 },
+  { month: "May", income: 10000 },
+  { month: "Jun", income: 6000 },
+  { month: "Jul", income: 9000 },
+  { month: "Aug", income: 7500 },
+  { month: "Sep", income: 11000 },
+  { month: "Oct", income: 13000 },
+  { month: "Nov", income: 12000 },
+  { month: "Dec", income: 15000 },
 ];
+
 
 const products = [
   {
@@ -127,7 +133,7 @@ const AdminDashboard = () => {
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={data}>
-              <XAxis dataKey="date" />
+              <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />
               <Line
