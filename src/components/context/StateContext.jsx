@@ -24,8 +24,6 @@ const StateContext = ({ children }) => {
     getAllProducts();
   }, []);
 
-
-
   const getAllUsers = async () => {
     try {
       const api = await axios.get("  http://localhost:1000/api/user/allusers", {
@@ -44,9 +42,6 @@ const StateContext = ({ children }) => {
     getAllUsers();
   }, []);
 
-
-
-
   const DeleteUserIdwise = async (Userid) => {
     try {
       if (!Userid) {
@@ -64,18 +59,13 @@ const StateContext = ({ children }) => {
       );
       console.log(api.data);
       return api.data;
-
-     
     } catch (error) {
       console.log("server error occured :", error);
     }
   };
-  
 
   const GetUserOrders = async () => {
     try {
-      
-
       const api = await axios.get(
         `http://localhost:1000/api/payment/allorder`,
         {
@@ -86,21 +76,46 @@ const StateContext = ({ children }) => {
       );
       // console.log(api.data);
       return api.data;
-
-     
     } catch (error) {
       console.log("server error occured :", error);
     }
   };
 
+ const addToCart = async (productid, title, price, qty, imgsrc) => {
+  
+  const cart={
+    productid:productid,
+    title:title,
+    price:price,
+    qty:qty,
+    imgsrc:imgsrc
 
+  }
+  
+  
+  try {
+    const response = await axios.post(
+      'http://localhost:1000/api/cart/add',
+      {productid, title, price, qty, imgsrc},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true, // <-- MUST be lowercase and enabled!
+      }
+    );
 
-
-
+    console.log(response.data);
+  } catch (error) {
+    console.error('Server error occurred:', error.response?.data || error.message);
+  }
+};
 
 
   return (
-    <ContextProvider.Provider value={{ products, Users ,DeleteUserIdwise ,GetUserOrders}}>
+    <ContextProvider.Provider
+      value={{ products, Users, DeleteUserIdwise, GetUserOrders , addToCart }}
+    >
       {children}
     </ContextProvider.Provider>
   );

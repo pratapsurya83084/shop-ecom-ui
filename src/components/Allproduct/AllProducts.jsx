@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import ContextProvider from "../context/ContextProvider";
 
 const AllProducts = () => {
-  const { products } = useContext(ContextProvider);
+  const { products ,addToCart } = useContext(ContextProvider);
   const [categoryProd, setCategoryProd] = useState([]);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AllProducts = () => {
         {/* Marquee */}
         <div className="w-full overflow-hidden whitespace-nowrap bg-red-600 py-3">
           <marquee className="text-white text-sm font-semibold inline-block">
-            🔥 Big Sale Today! Up to 50% Off on Electronics, Fashion, and More! 🛒 Hurry While Stocks Last! 🔥
+            🔥 Big Sale Today! Up to 50% Off on Men's, Fashion, and More! 🛒 Hurry While Stocks Last! 🔥
           </marquee>
         </div>
 
@@ -53,7 +53,7 @@ const AllProducts = () => {
 
         {/* Product Grid */}
         <div className="p-6 max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {categoryProd.length === 0 ? (
+          {categoryProd?.length === 0 ? (
             <p className="col-span-full text-center text-gray-500">No products found in this category.</p>
           ) : (
             categoryProd?.map((product) => (
@@ -68,7 +68,7 @@ const AllProducts = () => {
                   <img
                     src={product.imgsrc}
                     alt={product.title}
-                    className="w-36 h-36 object-cover rounded-md"
+                    className="w-36 h-36 object- rounded-md"
                   />
                 </div>
 
@@ -94,7 +94,9 @@ const AllProducts = () => {
                     ))}
                   </div> */}
 
-                  <button className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2 rounded-lg transition duration-300">
+                  <button 
+                  onClick={()=>addToCart(product._id,product.title, product.price, product.qty, product.imgsrc)}
+                  className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2 rounded-lg transition duration-300">
                     Add to Cart
                   </button>
                 </div>
