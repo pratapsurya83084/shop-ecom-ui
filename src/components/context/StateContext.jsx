@@ -81,41 +81,104 @@ const StateContext = ({ children }) => {
     }
   };
 
- const addToCart = async (productid, title, price, qty, imgsrc) => {
-  
-  const cart={
-    productid:productid,
-    title:title,
-    price:price,
-    qty:qty,
-    imgsrc:imgsrc
+  const addToCart = async (productid, title, price, qty, imgsrc) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:1000/api/cart/add",
+        { productid, title, price, qty, imgsrc },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // <-- MUST be lowercase and enabled!
+        }
+      );
 
-  }
-  
-  
-  try {
-    const response = await axios.post(
-      'http://localhost:1000/api/cart/add',
-      {productid, title, price, qty, imgsrc},
-      {
+      // console.log(response.data);
+      return response.data.cart;
+    } catch (error) {
+      console.error(
+        "Server error occurred:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  //get cart products
+  const GetUserCart = async () => {
+    try {
+      const api = await axios.get(`http://localhost:1000/api/cart/userCart`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        withCredentials: true, // <-- MUST be lowercase and enabled!
-      }
-    );
+        withCredentials: true,
+      });
+      // console.log(api.data);
+      return api.data;
+    } catch (error) {
+      console.log("server error occured :", error);
+    }
+  };
 
-    // console.log(response.data);
-    return response.data.cart;
-  } catch (error) {
-    console.error('Server error occurred:', error.response?.data || error.message);
-  }
-};
+  //increase qty
+  const  DecreaseQty= async (qty , productid) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:1000/api/cart/--qty",
+        { qty , productid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // <-- MUST be lowercase and enabled!
+        }
+      );
 
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Server error occurred:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
+    //Decrease qty
+  const IncreaseQty = async (qty,productid) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:1000/api/cart/--incqty",
+        { qty , productid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // <-- MUST be lowercase and enabled!
+        }
+      );
+
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Server error occurred:",
+        error.response?.data || error.message
+      );
+    }
+  };
   return (
     <ContextProvider.Provider
-      value={{ products, Users, DeleteUserIdwise, GetUserOrders , addToCart }}
+      value={{
+        products,
+        Users,
+        DeleteUserIdwise,
+        GetUserOrders,
+        addToCart,
+        GetUserCart,
+        IncreaseQty,
+        DecreaseQty
+      }}
     >
       {children}
     </ContextProvider.Provider>

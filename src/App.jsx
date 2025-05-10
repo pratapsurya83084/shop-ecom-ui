@@ -21,6 +21,8 @@ import DashBoard from "./components/admin/DashBoard";
 import ProtectRoute from "./components/admin/ProtectRoute";
 import AllProducts from "./components/Allproduct/AllProducts";
 import AllSinglepage from "./components/singlepage/AllSinglepage";
+import UserProfile from "./components/user/UserProfile";
+import Cart from "./components/user/Cart";
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
+        <Route path="/profile" element={<UserProfile />} />
 
         <Route path="/kids" element={<Kids />} />
         <Route path="/best-selling" element={<BestSelling />} />
@@ -37,10 +40,11 @@ const App = () => {
         <Route path="/top-rated" element={<TopRated />} />
         <Route path="/trending" element={<Trending />} />
         <Route path="/allproducts" element={<AllProducts />} />
+        <Route path="/cart" element={<Cart />} />
+
+
+
         <Route path="/allSinglepage/:id" element={<AllSinglepage />} />
-
-
-
         <Route path="/singlepagekids/:id" element={<SingleProductKids />} />
         <Route path="/MenSinglepage/:id" element={<MenSinglepage />} />
         <Route  path="/electronicSinglepage/:id" element={<ElectronicSinglepage />}/>

@@ -37,30 +37,14 @@ const FooterLinks = [
   },
 ];
 
-const Footerlist = [
-  {
-    title: "Home",
-    link: "/",
-  },
-  {
-    title: "About",
-    link: "/about",
-  },
-  {
-    title: "FAQ",
-    link: "/faq",
-  },
-  {
-    title: "Blog",
-    link: "/blog",
-  },
-];
+
 
 const Footer = () => {
   return (
     <div style={BannerImg} className="text-white">
       <div className="container">
-        <div data-aos="zoom-in" className="grid md:grid-cols-3 pb-44 pt-5">
+        {/* data-aos="zoom-in"  */}
+        <div className="grid md:grid-cols-3 pb-44 pt-5">
           {/* company details */}
           <div className="py-8 px-4">
             <h1 className="sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3 flex items-center gap-3">

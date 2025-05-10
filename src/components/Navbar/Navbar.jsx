@@ -15,10 +15,6 @@ import AdminLogin from "../admin/AdminLogin";
 import { Dialog, Transition } from "@headlessui/react";
 import { RxCross2 } from "react-icons/rx";
 
-
-
-
-
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -114,8 +110,6 @@ const Navbar = ({ handleOrderPopup }) => {
               <img src={Logo} alt="Logo" className="w-10" />
               Shopsy
             </Link>
-
-           
           </div>
 
           {/* search bar */}
@@ -140,9 +134,7 @@ const Navbar = ({ handleOrderPopup }) => {
                 // onClick={() => handleOrderPopup()}
                 className="flex bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full  items-center gap-3 group"
               >
-               
-                  0
-              
+                0
                 <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
               </button>
             </Link>
@@ -205,6 +197,16 @@ const Navbar = ({ handleOrderPopup }) => {
 
                   <div className="absolute z-[9999] hidden group-hover:block w-[100px] rounded-md bg-white p- right-1 text-black shadow-md">
                     <ul>
+                      <li>
+                        <button >
+                          <Link
+                            to="/profile"
+                            className="inline-block w-full rounded-md p-2  "
+                          >
+                           Profile
+                          </Link>
+                        </button>
+                      </li>
                       {/* {DropdownLinks.map((data) => ( */}
                       <li>
                         <button onClick={FormhandleSignOut}>
@@ -216,7 +218,7 @@ const Navbar = ({ handleOrderPopup }) => {
                           </Link>
                         </button>
                       </li>
-
+                      
                       {/* ))} */}
                     </ul>
                   </div>
@@ -322,10 +324,11 @@ const Navbar = ({ handleOrderPopup }) => {
         <div className="flex items-center">
           <button
             type="button"
-            className="rounded-md bg-white p-2 text-gray-400 md:hidden"
+            className="rounded-md bg-white p-2 m-2 text-gray-400 md:hidden"
             onClick={() => setOpen(true)}
           >
             <span className="sr-only">Open menu</span>
+
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -340,6 +343,7 @@ const Navbar = ({ handleOrderPopup }) => {
                 d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
               />
             </svg>
+            
           </button>
         </div>
       </div>
@@ -486,34 +490,6 @@ const Navbar = ({ handleOrderPopup }) => {
                       </div>
 
                       {/* Cart symbol in mobile size menu*/}
-                      <div className="ml-4 flow-root lg:ml-6">
-                        <Link
-                          to={"/cart"}
-                          className="group -m-4 flex items-center my-2 p-"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                            />
-                          </svg>
-
-                          <span className="ml-2 text-sm font-medium text-gray-700 group-">
-                            cart
-                          </span>
-                          {/* <span className="sr-only">
-                            items in cart, view bag
-                          </span> */}
-                        </Link>
-                      </div>
                     </div>
                   </div>
                 </Dialog.Panel>

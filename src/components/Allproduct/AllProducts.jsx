@@ -70,11 +70,11 @@ const AllProducts = () => {
               >
                 {/* Product Image */}
                 <Link to={`/allSinglepage/${product._id}`}>
-                  <div className="flex justify-center items-center p-4">
+                  <div className="flex justify-center items-center p-2">
                     <img
                       src={product.imgsrc}
                       alt={product.title}
-                      className="w-36 h-36 object- rounded-md"
+                      className="w-40 h-36 object- rounded-md"
                     />
                   </div>
                 </Link>

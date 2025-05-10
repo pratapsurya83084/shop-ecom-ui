@@ -41,18 +41,19 @@ if (addproduct) {
 }
   return (
     <Outlet>
+      <div className="dark:bg-gray-900   dark:text-white">
       <div className="p-6 max-w-6xl mx-auto grid gap-12">
         {newArray?.map((product) => (
           <div
             key={product._id}
-            className="md:flex justify-content-center items-center gap-8"
+            className="dark:bg-gray-800 rounded-md md:flex justify-content-center items-center gap-8"
           >
             {/* Product Image */}
             <div className="p-5 rounded-xl flex justify-content-center items-center overflow-hidden shadow-lg">
               <img
                 src={product.imgsrc}
                 alt={product.brand}
-                className="w- h-80 md:h-80"
+                className="w- h-80 md:h-80 rounded-md"
               />
             </div>
 
@@ -95,6 +96,7 @@ if (addproduct) {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </Outlet>
   );

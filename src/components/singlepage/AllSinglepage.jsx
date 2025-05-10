@@ -41,23 +41,26 @@ if (addproduct) {
 }
   return (
     <Outlet>
+      <div className="dark:bg-gray-900   dark:text-white">
+
+      
       <div className="p-6 max-w-6xl mx-auto grid gap-12">
         {newArray?.map((product) => (
           <div
             key={product._id}
-            className="md:flex justify-content-center items-center gap-8"
+            className="dark:bg-gray-800 rounded-md md:flex justify-content-center items-center gap-8"
           >
             {/* Product Image */}
-            <div className="p-5 rounded-xl flex justify-content-center items-center overflow-hidden shadow-lg">
+            <div className="shadow-lg p-5 rounded-xl flex justify-content-center items-center overflow-hidden ">
               <img
                 src={product.imgsrc}
                 alt={product.brand}
-                className="w- h-80 md:h-80"
+                className="w- h-80 md:h-80 rounded-md"
               />
             </div>
 
             {/* Product Details */}
-            <div className="flex flex-col justify-center">
+            <div className="p-3 flex flex-col justify-center">
               <h2 className="text-xl font-bold mt-10 md:mt-0">
                 {product.title}
               </h2>
@@ -65,7 +68,7 @@ if (addproduct) {
               <p className="text-2xl text-red-600 font-semibold mb-6">
                 {product.offer}
               </p>
-              <p className="text-gray-600 mb-6">
+              <p className=" mb-6 p-">
                 This product is made with high-quality materials and offers you
                 the best comfort and style.
               </p>
@@ -95,6 +98,7 @@ if (addproduct) {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </Outlet>
   );

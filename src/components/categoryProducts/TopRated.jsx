@@ -42,11 +42,13 @@ if (addproduct) {
                 className="dark:border rounded-xl shadow-md hover:shadow-lg hover:scale-[1.03] transition-transform overflow-hidden"
               >
                 <Link to={`/toprated-Singlepage/${product._id}`}>
-                  <img
-                    src={product.imgsrc}
-                    alt={product.title}
-                    className="w-full  h-40 object-"
-                  />
+                   <div className="flex justify-center items-center p-2">
+                    <img
+                      src={product.imgsrc}
+                      alt={product.title}
+                      className="w-40 h-36 object- rounded-md"
+                    />
+                  </div>
                 </Link>
                 <div className="p-3 flex flex-col gap-2">
                   <div className="flex justify-between text-sm font-medium">
