@@ -162,7 +162,18 @@ const Navbar = ({ handleOrderPopup }) => {
 
                   <div className="absolute z-[9999] hidden group-hover:block w-[100px] rounded-md bg-white p- right-1 text-black shadow-md">
                     <ul>
-                      {/* {DropdownLinks.map((data) => ( */}
+                     <li>
+                        <button
+                  
+                         >
+                          <Link
+                            to="/profile"
+                            className="inline-block w-full rounded-md p-2 "
+                          >
+                          Profile
+                          </Link>
+                        </button>
+                      </li>
                       <li>
                         <button onClick={googlehandleSignOut}>
                           <Link
@@ -174,7 +185,7 @@ const Navbar = ({ handleOrderPopup }) => {
                         </button>
                       </li>
 
-                      {/* ))} */}
+                     
                     </ul>
                   </div>
                 </li>
@@ -198,16 +209,16 @@ const Navbar = ({ handleOrderPopup }) => {
                   <div className="absolute z-[9999] hidden group-hover:block w-[100px] rounded-md bg-white p- right-1 text-black shadow-md">
                     <ul>
                       <li>
-                        <button >
+                        <button>
                           <Link
                             to="/profile"
                             className="inline-block w-full rounded-md p-2  "
                           >
-                           Profile
+                            Profile
                           </Link>
                         </button>
                       </li>
-                      {/* {DropdownLinks.map((data) => ( */}
+                    
                       <li>
                         <button onClick={FormhandleSignOut}>
                           <Link
@@ -218,7 +229,7 @@ const Navbar = ({ handleOrderPopup }) => {
                           </Link>
                         </button>
                       </li>
-                      
+
                       {/* ))} */}
                     </ul>
                   </div>
@@ -343,7 +354,6 @@ const Navbar = ({ handleOrderPopup }) => {
                 d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
               />
             </svg>
-            
           </button>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import Outlet from "../Outlet";
 import ContextProvider from "../context/ContextProvider";
-
+import axios from 'axios';
+import { LogIn } from "lucide-react";
 const cartItems = [
   {
     id: 1,
@@ -25,8 +26,8 @@ const cartItems = [
 ];
 
 export default function Cart() {
-  const { GetUserCart ,IncreaseQty ,DecreaseQty} = useContext(ContextProvider);
-  const [cartItem, setCartItem] = useState();
+  const { GetUserCart, IncreaseQty, DecreaseQty } = useContext(ContextProvider);
+  const [cartItem, setCartItem] = useState([]);
 
   useEffect(() => {
     const fetCartProduct = async () => {
@@ -50,34 +51,42 @@ export default function Cart() {
   const platformFee = 3;
   const deliveryCharge = 0;
   const total = subtotal + platformFee + deliveryCharge;
+  
+async function Increaseqty(qty, pid) {
+  if (!qty || !pid) return;
 
-//decreaser qty button
-const Decreaseqty =async (qty ,pid) =>{
-    if (!qty||!pid) {
-        // alert("no id ,qtty")
-        return;
-    }
-const decQty = await DecreaseQty(qty , pid);
-console.log("Dec id:",decQty);
+  // Optimistically update local UI
+  setCartItem(prev =>
+    prev.map(item =>
+      item.productid === pid ? { ...item, qty: item.qty + 1 } : item
+    )
+  );
 
-}
-//increase qty button
-const Increaseqty = async(qty ,pid) =>{
-      if (!qty||!pid) {
-        // alert("no id ,qtty")
-        return;
-    }
-const incQty = await IncreaseQty(qty , pid);
-    console.log("Inc id:",incQty);
-
+  // Sync with backend (can fail silently or handle error)
+  try {
+    await IncreaseQty(qty, pid);
+  } catch (err) {
+    console.error("Increase failed", err);
+    // Optionally revert UI change or show error
+  }
 }
 
-          
+async function Decreaseqty(qty, pid) {
+  if (!qty || !pid) return;
 
+  // Optimistic local update
+  setCartItem(prev =>
+    prev.map(item =>
+      item.productid === pid ? { ...item, qty: item.qty - 1 } : item
+    )
+  );
 
-
-
-
+  try {
+    await DecreaseQty(qty, pid);
+  } catch (err) {
+    console.error("Decrease failed", err);
+  }
+}
 
 
 
@@ -106,27 +115,38 @@ const incQty = await IncreaseQty(qty , pid);
                         {item.category}
                       </p>
 
-                      
-                        <div className="text-sm text-gray-700 mt-1">
-                          ₹. {item.price}
-                         
-                          <span className="text-green-600 font-semibold">
-                            {item.offerPrice}
-                          </span>{" "}
-                         
-                          <div className="text-sm mt-1 text-gray-600">
-                            Delivery by {item.delivery} |{" "}
-                            <span className="text-green-600">Free</span>
-                          </div>
+                      <div className="text-sm text-gray-700 mt-1">
+                        ₹. {item.price}
+                        <span className="text-green-600 font-semibold">
+                          {item.offerPrice}
+                        </span>{" "}
+                        <div className="text-sm mt-1 text-gray-600">
+                          Delivery by {item.delivery} |{" "}
+                          <span className="text-green-600">Free</span>
                         </div>
-                 
+                      </div>
+
                       {/* Quantity + Actions */}
 
                       <div className="flex items-center mt-4 gap-4">
                         <div className="flex items-center border rounded">
-                          <button   onClick={()=>Decreaseqty(item.qty,item.productid)} className="px-2 py-1">−</button>
+                          <button
+                            onClick={() =>
+                              Decreaseqty(item.qty, item.productid)
+                            }
+                            className="px-2 py-1"
+                          >
+                            −
+                          </button>
                           <span className="px-3">{item.qty}</span>
-                          <button    onClick={()=>Increaseqty(item.qty,item.productid)}  className="px-2 py-1">+</button>
+                          <button
+                            onClick={() =>
+                              Increaseqty(item.qty, item.productid)
+                            }
+                            className="px-2 py-1"
+                          >
+                            +
+                          </button>
                         </div>
 
                         <button className="text-blue-600 text-sm hover:underline">
