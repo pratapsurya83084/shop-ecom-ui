@@ -1,4 +1,4 @@
-import React,{useContext ,useState} from "react";
+import React,{memo, useContext ,useState} from "react";
 import {
   BarChart3,
   Package,
@@ -196,4 +196,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default (AdminDashboard);

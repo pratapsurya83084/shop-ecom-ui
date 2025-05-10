@@ -1,86 +1,60 @@
-import React from "react";
+import React, { useContext } from "react";
 import Outlet from "../Outlet";
 import { useParams } from "react-router-dom";
+import { ShoppingCart, Star } from "lucide-react";
+// import ContextProvider from "../context/ContextProvider";
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
 // Your brands array
-const brands = [
-  {
-    id: 1,
-    image:
-      "https://static.digit.in/product/29f79e7eeacbb8e1ba68d3532fea60a387104965.jpeg?tr=w-1200",
-    brand: "DKNY",
-    offer: "MIN. 20% OFF",
-    price:"80000"
-  },
-  {
-    id: 2,
-    image:
-      "https://media.extra.com/s/aurora/100315775_800/Apple-iPhone-14-Pro-Max%2C-5G%2C-128GB%2C-Space-Black?locale=en-GB,en-*,*",
-    brand: "Just Cavalli",
-    offer: "MIN. 20% OFF",
-        price:"80000"
-  },
-  {
-    id: 3,
-    image:
-      "https://th.bing.com/th/id/OIP._7Ve0ytx_5dLd8SLk7oFfAHaHa?rs=1&pid=ImgDetMain",
-    brand: "GUESS",
-    offer: "MIN. 30% OFF",
-      price:"90000"
-  },
-  {
-    id: 4,
-    image:
-      "https://microless.com/cdn/products/f026b0f0fb6302d095eda73e25215408-hi.jpg",
-    brand: "Polo Ralph Lauren",
-    offer: "FLAT 40% OFF",
-      price:"120000"
-  },
-  {
-    id: 5,
-    image:
-      "https://th.bing.com/th/id/OIP.v9eYR7b8CzrxU0LHPz6HmQHaHa?rs=1&pid=ImgDetMain",
-    brand: "Fred Perry",
-    offer: "UP TO 40% OFF",
-        price:"70000"
-  },
-  {
-    id: 6,
-    image:
-      "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/0e92d77e-8328-47ab-ac0c-9eae5cd8e3e1.jpg",
-    brand: "The Collective",
-    offer: "FLAT 40% OFF",
-        price:"80000"
-  },
-];
-
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const ElectronicSinglepage = () => {
+  const { products, addToCart } = useContext(ContextProvider);
   const { id } = useParams();
 
-  //   console.log(parseInt(id));
+    const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
 
-  const newArray = brands.filter((pid) => pid.id === Number(id));
+const newArray = products?.filter((pid)=>pid._id === id)
+  // products?.filter((pid) => pid._id == Number(id));
   console.log(newArray);
-
+  // console.log(products);
+  const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
+}
+}
   return (
     <Outlet>
       <div className="p-6 max-w-6xl mx-auto grid gap-12">
-        {newArray.map((product) => (
+        {newArray?.map((product) => (
           <div
-            key={product.id}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            key={product._id}
+            className="md:flex justify-content-center items-center gap-8"
           >
             {/* Product Image */}
-            <div className="rounded-xl overflow-hidden shadow-lg flex justify-center items-center">
+            <div className="p-5 rounded-xl flex justify-content-center items-center overflow-hidden shadow-lg">
               <img
-                src={product.image}
+                src={product.imgsrc}
                 alt={product.brand}
-                className="w-52 h-80 "
+                className="w- h-80 md:h-80"
               />
             </div>
 
             {/* Product Details */}
             <div className="flex flex-col justify-center">
-              <h1 className="text-3xl font-bold mb-4">{product.brand}</h1>
+              <h2 className="text-xl font-bold mt-10 md:mt-0">
+                {product.title}
+              </h2>
+
               <p className="text-2xl text-red-600 font-semibold mb-6">
                 {product.offer}
               </p>
@@ -89,12 +63,26 @@ const ElectronicSinglepage = () => {
                 the best comfort and style.
               </p>
 
-             
-<p>
- ₹.{product.price}
-</p>
+              <div>
+                <h1 className="text-"> {product.price}</h1>
+              </div>
+
+              <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    size={14}
+                    fill={
+                      index < Math.floor(product.rating) ? "#facc15" : "none"
+                    }
+                    strokeWidth={1}
+                  />
+                ))}
+              </div>
               {/* Add to Cart */}
-              <button className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
+              <button 
+               onClick={()=>CartAddProducts(product._id,product.title, product.price, product.qty, product.imgsrc)}
+              className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
                 Add to Cart
               </button>
             </div>

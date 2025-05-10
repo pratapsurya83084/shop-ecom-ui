@@ -5,19 +5,27 @@ import { ShoppingCart, Star } from "lucide-react";
 // import ContextProvider from "../context/ContextProvider";
 import ContextProvider from "../context/ContextProvider";
 import toast, { Toaster } from "react-hot-toast";
-// Your brands array
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-const WomenSinglepage = () => {
+import Cookies from "js-cookie";
+// Your brands array
+
+
+const AllSinglepage = () => {
   const { products, addToCart } = useContext(ContextProvider);
   const { id } = useParams();
 
-    const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
+  //get all cookies 3
+   const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
+// console.log(token);
+ 
 
 const newArray = products?.filter((pid)=>pid._id === id)
   // products?.filter((pid) => pid._id == Number(id));
   console.log(newArray);
-  const navigate = useNavigate()
+  // console.log(products);
+
+  //onlclick  buuton
+   const navigate = useNavigate()
    const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
 //check if user is login then it possible to add cart else redirects to login page
 if (token) {
@@ -92,4 +100,4 @@ if (addproduct) {
   );
 };
 
-export default WomenSinglepage;
+export default AllSinglepage;

@@ -1,76 +1,75 @@
 import Outlet from '../Outlet';
-import React from "react";
+import React,{useContext} from "react";
 import { Link } from 'react-router-dom';
-
-const brands = [
-  {
-    id: 1,
-    image: "https://static.digit.in/product/29f79e7eeacbb8e1ba68d3532fea60a387104965.jpeg?tr=w-1200",
-    brand: "DKNY",
-    offer: "MIN. 20% OFF",
-  },
-  {
-    id: 2,
-    image: "https://media.extra.com/s/aurora/100315775_800/Apple-iPhone-14-Pro-Max%2C-5G%2C-128GB%2C-Space-Black?locale=en-GB,en-*,*",
-    brand: "Just Cavalli",
-    offer: "MIN. 20% OFF",
-  },
-  {
-    id: 3,
-    image: "https://th.bing.com/th/id/OIP._7Ve0ytx_5dLd8SLk7oFfAHaHa?rs=1&pid=ImgDetMain",
-    brand: "GUESS",
-    offer: "MIN. 30% OFF",
-  },
-  {
-    id: 4,
-    image: "https://microless.com/cdn/products/f026b0f0fb6302d095eda73e25215408-hi.jpg",
-    brand: "Polo Ralph Lauren",
-    offer: "FLAT 40% OFF",
-  },
-  {
-    id: 5,
-    image: "https://th.bing.com/th/id/OIP.v9eYR7b8CzrxU0LHPz6HmQHaHa?rs=1&pid=ImgDetMain",
-    brand: "Fred Perry",
-    offer: "UP TO 40% OFF",
-  },
-  {
-    id: 6,
-    image: "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/0e92d77e-8328-47ab-ac0c-9eae5cd8e3e1.jpg",
-    brand: "The Collective",
-    offer: "FLAT 40% OFF",
-  },
-];
-
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie"
+import { useNavigate } from "react-router-dom";
 export default function Electronics() {
+    const { products ,addToCart } = useContext(ContextProvider);
+    console.log(products);
+  const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
+  
+  const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
+}
+}
   return (
     <Outlet>
-      <div className="px-4 md:px-6 py-6">
-      <h3 className='p-2 text-md md:text-3xl font-bold md:p-4'> 
-        "Explore Trendy Electronics "
-         </h3>
-
-        {/* GRID layout for two rows */}
-        <div className="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-6   gap-6">
-          {brands.map((item) => (
+      <div className="  dark:bg-gray-900  dark:text-white">
+             <Toaster position="top-right" reverseOrder={false} />
+         <div className="  p-4 max-w-6xl mx-auto">
+        <h1 className="text-xl md:text-3xl font-bold mb-6 text-center">
+         Explore Electronics shopping
+        </h1>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+          {products?.map((product,index) => (
             <div
-              key={item.id}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out"
+              key={product._id}
+              className="dark:border rounded-xl shadow-md hover:shadow-lg hover:scale-[1.03] transition-transform overflow-hidden"
             >
-           <Link to={`/electronicSinglepage/${item.id}`}>
-           <div className="overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.brand}
-                  className="w-full h- md:h-60 object-cove hover:scale-110 transition-transform duration-300 ease-in-out"
-                />
-              </div></Link>
-              <div className="p-4 text-center">
-                <h3 className="text-lg font-bold">{item.brand}</h3>
-                <p className="text-pink-600 font-semibold">{item.offer}</p>
+              <Link to={`/electronicSinglepage/${product._id}`}>
+              <img
+                src={product.imgsrc}
+                alt={product.title}
+                className="w-full  h-40 object-"
+              />
+              </Link>
+              <div className="p-3 flex flex-col gap-2">
+                <div className="flex justify-between text-sm font-medium">
+                  <h2>{product.title}</h2>
+                  <span className="text-red-600 font-semibold">    ₹.{product.price}</span>
+                </div>
+                {/* <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <Star
+                      key={index}
+                      size={14}
+                      fill={index < Math.floor(product.rating) ? "#facc15" : "none"}
+                      strokeWidth={1}
+                    />
+                  ))}
+                </div> */}
+                <button
+                 onClick={()=>CartAddProducts(product._id,product.title, product.price, product.qty, product.imgsrc)}
+                className="mt-1 w-full flex items-center justify-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-sm py-1.5 rounded-md transition">
+                  Add  to  cart
+                </button>
               </div>
             </div>
           ))}
         </div>
+      </div>
       </div>
     </Outlet>
   );

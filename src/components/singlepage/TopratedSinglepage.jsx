@@ -1,97 +1,87 @@
-import React from "react";
+import React, { useContext } from "react";
 import Outlet from "../Outlet";
 import { useParams } from "react-router-dom";
+import { ShoppingCart, Star } from "lucide-react";
+// import ContextProvider from "../context/ContextProvider";
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
 // Your brands array
-const topRated = [
-  {
-    id: 33,
-    name: "Noise Cancelling Headphones",
-    image:
-      "https://th.bing.com/th/id/OIP.w9Y1SbsjyiVHZxsSkoLzNQHaMU?rs=1&pid=ImgDetMain",
-    price: "₹2999",
-    rating: 4.8,
-  },
-  {
-    id: 34,
-    name: "4K Smart LED TV",
-    image: "https://images-na.ssl-images-amazon.com/images/I/910pOl2XQ9L.jpg",
-    price: "₹21999",
-    rating: 4.9,
-  },
-  {
-    id: 35,
-    name: "Wireless Mouse",
-    image:
-      "https://th.bing.com/th/id/OIP.HLsHKOuhAz3lAxhk2FPrOwHaHa?rs=1&pid=ImgDetMain",
-    price: "₹499",
-    rating: 4.7,
-  },
-
-  {
-    id: 36,
-    name: "Laptop apple",
-    image:
-      "https://microless.com/cdn/products/44161b03532a6fdf5e8b9b50a52f56c9-hi.jpg",
-    price: "₹129990",
-    rating: 4.7,
-  },
-
-  {
-    id: 37,
-    name: "iphone 15 pro max",
-    image:
-      "https://esim-compatible-phones.com/wp-content/uploads/2024/06/iPhone-15-Pro-Max.jpg",
-    price: "₹150000",
-    rating: 4.9,
-  },
-
-  {
-    id: 38,
-    name: "Long sleeve t-shirt",
-    image:
-      "https://i5.walmartimages.com/asr/3655bc7b-48e5-453c-a494-f1ddabeb7f92_1.9838d30a904832448a4d13b9d3edd737.jpeg",
-    price: "₹150000",
-    rating: 4.9,
-  },
-];
-
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const TopratedSinglepage = () => {
+  const { products, addToCart } = useContext(ContextProvider);
   const { id } = useParams();
+  const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
+  
 
-  //   console.log(parseInt(id));
-
-  const newArray = topRated.filter((pid) => pid.id === Number(id));
+const newArray = products?.filter((pid)=>pid._id === id)
+  // products?.filter((pid) => pid._id == Number(id));
   console.log(newArray);
-
+  const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
+}
+}
   return (
     <Outlet>
       <div className="p-6 max-w-6xl mx-auto grid gap-12">
-        {newArray.map((product) => (
+        {newArray?.map((product) => (
           <div
-            key={product.id}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            key={product._id}
+            className="md:flex justify-content-center items-center gap-8"
           >
             {/* Product Image */}
-            <div className="rounded-xl overflow-hidden shadow-lg flex justify-center items-center">
+            <div className="p-5 rounded-xl flex justify-content-center items-center overflow-hidden shadow-lg">
               <img
-                src={product.image}
-                alt={product.name}
-                className="w-52 h-80 "
+                src={product.imgsrc}
+                alt={product.brand}
+                className="w- h-80 md:h-80"
               />
             </div>
 
             {/* Product Details */}
             <div className="flex flex-col justify-center">
-              <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+              <h2 className="text-xl font-bold mt-10 md:mt-0">
+                {product.title}
+              </h2>
 
+              <p className="text-2xl text-red-600 font-semibold mb-6">
+                {product.offer}
+              </p>
               <p className="text-gray-600 mb-6">
                 This product is made with high-quality materials and offers you
                 the best comfort and style.
               </p>
 
-              <p>₹.{product.price}</p>
+              <div>
+                <h1 className="text-"> {product.price}</h1>
+              </div>
+
+              <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    size={14}
+                    fill={
+                      index < Math.floor(product.rating) ? "#facc15" : "none"
+                    }
+                    strokeWidth={1}
+                  />
+                ))}
+              </div>
               {/* Add to Cart */}
-              <button className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
+              <button 
+               onClick={()=>CartAddProducts(product._id,product.title, product.price, product.qty, product.imgsrc)}
+              className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
                 Add to Cart
               </button>
             </div>

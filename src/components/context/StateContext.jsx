@@ -105,7 +105,8 @@ const StateContext = ({ children }) => {
       }
     );
 
-    console.log(response.data);
+    // console.log(response.data);
+    return response.data.cart;
   } catch (error) {
     console.error('Server error occurred:', error.response?.data || error.message);
   }

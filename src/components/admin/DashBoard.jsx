@@ -23,12 +23,17 @@ import AllOrders from "./AllOrders.jsx";
 import ContextProvider from "../context/ContextProvider.jsx";
 import AnalyticsPage from "./AnalyticsPage .jsx";
 import ReviewUsers from "./ReviewUsers.jsx";
-
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { header } from "framer-motion/client";
+import axios from 'axios';
+import toast from "react-hot-toast";
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { Users } = useContext(ContextProvider);
-  console.log(Users);
+  // console.log(Users);
+
 
   const renderContent = () => {
     switch (activeSection) {
@@ -96,7 +101,41 @@ const Dashboard = () => {
   );
 };
 
-const SidebarContent = ({ onSelect, activeSection }) => (
+const SidebarContent = ({ onSelect, activeSection }) =>{
+const navigate = useNavigate();
+
+const AdminToken = Cookies.get("adminToken")
+//logout function button
+const handleLogout = async() => {
+  try {
+    const apiLogout =await axios.post("http://localhost:1000/api/user/adminlogout",{},{
+     headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      })
+      console.log(apiLogout.data.status);
+      if (apiLogout.data.status==true) {
+        toast.success("Admin logout success");
+      }else{
+        toast.error(apiLogout.data.message);
+      }
+  } catch (error) {
+    console.log("sever error :",error);
+    
+  }
+  //call api logout
+    if (AdminToken) {
+      localStorage.removeItem("AdminToken"); // Or however you store it
+      alert("Admin logged out successfully");
+      navigate("/"); // Redirect to login page
+    }
+  };
+
+  
+  return (
+
+
   <nav className="space-y-4 mt-6">
     <SidebarItem
       icon={<LayoutDashboard size={20} />}
@@ -150,11 +189,11 @@ const SidebarContent = ({ onSelect, activeSection }) => (
     <SidebarItem
       icon={<LogOut size={20} />}
       label="Logout"
-      onClick={() => alert("Logged out")}
+      onClick={handleLogout}
     />
   </nav>
 );
-
+}
 const SidebarItem = ({ icon, label, active, onClick }) => (
   <div
     onClick={onClick}

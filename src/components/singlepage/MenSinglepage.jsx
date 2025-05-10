@@ -1,85 +1,59 @@
-import React from "react";
+import React, { useContext } from "react";
 import Outlet from "../Outlet";
 import { useParams } from "react-router-dom";
+import { ShoppingCart, Star } from "lucide-react";
+// import ContextProvider from "../context/ContextProvider";
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
 // Your brands array
-const brands = [
-  {
-    id: 1,
-    image:
-      "https://i5.walmartimages.com/asr/c33bb859-28b0-48cb-a10c-f875059fd86a_1.d6d7413a3f0147ff6abfebc0a824b8ac.jpeg",
-    brand: "DKNY",
-    offer: "MIN. 20% OFF",
-  },
-  {
-    id: 2,
-    image:
-      "https://img.ltwebstatic.com/images3_pi/2023/11/27/e1/17010663920250ac3b9a2f8de469937d15cfe503dd_thumbnail_900x.webp",
-    brand: "Just Cavalli",
-    offer: "MIN. 20% OFF",
-        price:"2800"
-  },
-  {
-    id: 3,
-    image:
-      "https://img.kwcdn.com/product/1dec4a0c30/8c4a729e-ea1f-4ca3-881e-d61eff8ca570_1339x1785.jpeg?imageView2/2/w/500/q/70/format/webp",
-    brand: "GUESS",
-    offer: "MIN. 30% OFF",
-        price:"700"
-  },
-  {
-    id: 4,
-    image:
-      "https://i5.walmartimages.com/seo/Mens-Formal-Shirts-Long-Sleeve-Irregular-Button-Up-Dress-Shirt-Regular-Fit-Casual-Fashion-Solid-Color-Shirt-Tops_d415df83-2c8f-4418-9c91-afff5e3be7b7.7f3a53c0280bbc8a389dca3a9c69f75e.jpeg",
-    brand: "Polo Ralph Lauren",
-    offer: "FLAT 40% OFF",
-        price:"9000"
-  },
-  {
-    id: 5,
-    image:
-      "https://www.brooktaverner.com/image_cache/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/e/s/este-white_-fabian-navy-check.jpg",
-    brand: "Fred Perry",
-    offer: "UP TO 40% OFF",
-        price:"670"
-  },
-  {
-    id: 6,
-    image:
-      "https://th.bing.com/th/id/OIP.aHaPWNhatkg_ssHZpBfdiwHaLH?rs=1&pid=ImgDetMain",
-    brand: "The Collective",
-    offer: "FLAT 40% OFF",
-      price:"570"
-  },
-];
-
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const MenSinglepage = () => {
+  const { products, addToCart } = useContext(ContextProvider);
   const { id } = useParams();
 
-  //   console.log(parseInt(id));
+    const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
 
-  const newArray = brands.filter((pid) => pid.id === Number(id));
+const newArray = products?.filter((pid)=>pid._id === id)
+  // products?.filter((pid) => pid._id == Number(id));
   console.log(newArray);
-
+  const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
+}
+}
   return (
     <Outlet>
       <div className="p-6 max-w-6xl mx-auto grid gap-12">
-        {newArray.map((product) => (
+        {newArray?.map((product) => (
           <div
-            key={product.id}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            key={product._id}
+            className="md:flex justify-content-center items-center gap-8"
           >
             {/* Product Image */}
-            <div className="rounded-xl overflow-hidden shadow-lg flex justify-center items-center">
+            <div className="p-5 rounded-xl flex justify-content-center items-center overflow-hidden shadow-lg">
               <img
-                src={product.image}
+                src={product.imgsrc}
                 alt={product.brand}
-                className="w-52 h-80 object-cover"
+                className="w- h-80 md:h-80"
               />
             </div>
 
             {/* Product Details */}
             <div className="flex flex-col justify-center">
-              <h1 className="text-3xl font-bold mb-4">{product.brand}</h1>
+              <h2 className="text-xl font-bold mt-10 md:mt-0">
+                {product.title}
+              </h2>
+
               <p className="text-2xl text-red-600 font-semibold mb-6">
                 {product.offer}
               </p>
@@ -87,24 +61,27 @@ const MenSinglepage = () => {
                 This product is made with high-quality materials and offers you
                 the best comfort and style.
               </p>
-<p>₹.{product.price}</p>
-              {/* Size Selector */}
-              <div className="mb-4">
-                <h3 className="font-semibold mb-2">Select Size:</h3>
-                <div className="flex gap-2">
-                  {["S", "M", "L", "XL"].map((size) => (
-                    <button
-                      key={size}
-                      className="border rounded-full px-4 py-2 hover:bg-indigo-100"
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
+
+              <div>
+                <h1 className="text-"> {product.price}</h1>
               </div>
 
+              <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    size={14}
+                    fill={
+                      index < Math.floor(product.rating) ? "#facc15" : "none"
+                    }
+                    strokeWidth={1}
+                  />
+                ))}
+              </div>
               {/* Add to Cart */}
-              <button className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
+              <button 
+               onClick={()=>CartAddProducts(product._id,product.title, product.price, product.qty, product.imgsrc)}
+              className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
                 Add to Cart
               </button>
             </div>

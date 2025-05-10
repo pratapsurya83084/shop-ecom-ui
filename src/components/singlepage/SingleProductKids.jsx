@@ -1,90 +1,87 @@
-import React from 'react';
-import Outlet from '../Outlet';
-import { useParams } from 'react-router-dom';
+import React, { useContext } from "react";
+import Outlet from "../Outlet";
+import { useParams } from "react-router-dom";
+import { ShoppingCart, Star } from "lucide-react";
+// import ContextProvider from "../context/ContextProvider";
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
 // Your brands array
-const brands = [
-  {
-    id: 1,
-    image: "https://th.bing.com/th/id/OIP.OGistRyCyhYFRcPwoNfWvQHaHa?rs=1&pid=ImgDetMain",
-    brand: "DKNY",
-    offer: "MIN. 20% OFF",
-  },
-  {
-    id: 2,
-    image: "https://m.media-amazon.com/images/I/312z2YKyQEL.jpg",
-    brand: "Just Cavalli",
-    offer: "MIN. 20% OFF",
-  },
-  {
-    id: 3,
-    image: "https://aasourcingltd.com/wp-content/uploads/2020/08/1-107.jpg",
-    brand: "GUESS",
-    offer: "MIN. 30% OFF",
-  },
-  {
-    id: 4,
-    image: "https://th.bing.com/th/id/OIP.4DGzChtBIqncRrEHbHFiqQHaHa?rs=1&pid=ImgDetMain",
-    brand: "Polo Ralph Lauren",
-    offer: "FLAT 40% OFF",
-  },
-  {
-    id: 5,
-    image: "https://th.bing.com/th/id/OIP.IhjpHLumxqiaNYjvp5d1OwHaKl?rs=1&pid=ImgDetMain",
-    brand: "Fred Perry",
-    offer: "UP TO 40% OFF",
-  },
-  {
-    id: 6,
-    image: "https://www.swagshirts99.com/wp-content/uploads/2021/12/King-Kong-Kids-T-Shirt.jpg",
-    brand: "The Collective",
-    offer: "FLAT 40% OFF",
-  },
-];
-
-const SingleProduct = () => {
-    const { id } = useParams();
-    
-//   console.log(parseInt(id));
-
-  const newArray = brands.filter(pid => pid.id === Number(id));
-console.log(newArray);
-
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+const SingleProductKids = () => {
+  const { products, addToCart } = useContext(ContextProvider);
+  const { id } = useParams();
+  const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
   
+
+const newArray = products?.filter((pid)=>pid._id === id)
+  // products?.filter((pid) => pid._id == Number(id));
+  console.log(newArray);
+    const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
+}
+}
   return (
     <Outlet>
       <div className="p-6 max-w-6xl mx-auto grid gap-12">
-        {newArray.map((product) => (
-          <div key={product.id} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {newArray?.map((product) => (
+          <div
+            key={product._id}
+            className="md:flex justify-content-center items-center gap-8"
+          >
             {/* Product Image */}
-            <div className="rounded-xl overflow-hidden shadow-lg">
-              <img src={product.image} alt={product.brand} className="w-full h- object-cover" />
+            <div className="p-5 rounded-xl flex justify-content-center items-center overflow-hidden shadow-lg">
+              <img
+                src={product.imgsrc}
+                alt={product.brand}
+                className="w- h-80 md:h-80"
+              />
             </div>
 
             {/* Product Details */}
             <div className="flex flex-col justify-center">
-              <h1 className="text-3xl font-bold mb-4">{product.brand}</h1>
-              <p className="text-2xl text-red-600 font-semibold mb-6">{product.offer}</p>
+              <h2 className="text-xl font-bold mt-10 md:mt-0">
+                {product.title}
+              </h2>
+
+              <p className="text-2xl text-red-600 font-semibold mb-6">
+                {product.offer}
+              </p>
               <p className="text-gray-600 mb-6">
-                This product is made with high-quality materials and offers you the best comfort and style.
+                This product is made with high-quality materials and offers you
+                the best comfort and style.
               </p>
 
-              {/* Size Selector */}
-              <div className="mb-4">
-                <h3 className="font-semibold mb-2">Select Size:</h3>
-                <div className="flex gap-2">
-                  {["S", "M", "L", "XL"].map((size) => (
-                    <button
-                      key={size}
-                      className="border rounded-full px-4 py-2 hover:bg-indigo-100"
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
+              <div>
+                <h1 className="text-"> {product.price}</h1>
               </div>
 
+              <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    key={index}
+                    size={14}
+                    fill={
+                      index < Math.floor(product.rating) ? "#facc15" : "none"
+                    }
+                    strokeWidth={1}
+                  />
+                ))}
+              </div>
               {/* Add to Cart */}
-              <button className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
+              <button
+               onClick={()=>CartAddProducts(product._id,product.title, product.price, product.qty, product.imgsrc)}
+              className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-300">
                 Add to Cart
               </button>
             </div>
@@ -95,4 +92,4 @@ console.log(newArray);
   );
 };
 
-export default SingleProduct;
+export default SingleProductKids;

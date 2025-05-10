@@ -1,85 +1,88 @@
-import React from "react";
-import Outlet from '../Outlet';
+import Outlet from "../Outlet";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie"
+import { useNavigate } from "react-router-dom";
 
-import { Link } from 'react-router-dom';
+export default function TopRated() {
+  const { products, addToCart } = useContext(ContextProvider);
+  console.log(products);
 
-const topRated = [
-  {
-    id: 33,
-    name: "Noise Cancelling Headphones",
-    image: "https://th.bing.com/th/id/OIP.w9Y1SbsjyiVHZxsSkoLzNQHaMU?rs=1&pid=ImgDetMain",
-    price: "₹2999",
-    rating: 4.8,
-  },
-  {
-    id: 34,
-    name: "4K Smart LED TV",
-    image: "https://images-na.ssl-images-amazon.com/images/I/910pOl2XQ9L.jpg",
-    price: "₹21999",
-    rating: 4.9,
-  },
-  {
-    id: 35,
-    name: "Wireless Mouse",
-    image: "https://th.bing.com/th/id/OIP.HLsHKOuhAz3lAxhk2FPrOwHaHa?rs=1&pid=ImgDetMain",
-    price: "₹499",
-    rating: 4.7,
-  },
-
-  {
-    id: 36,
-    name: "Laptop apple",
-    image: "https://microless.com/cdn/products/44161b03532a6fdf5e8b9b50a52f56c9-hi.jpg",
-    price: "₹129990",
-    rating: 4.7,
-  },
-
-  {
-    id: 37,
-    name: "iphone 15 pro max",
-    image:"https://esim-compatible-phones.com/wp-content/uploads/2024/06/iPhone-15-Pro-Max.jpg",
-    price: "₹150000",
-    rating: 4.9,
-  },
+  const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
   
-  {
-    id: 38,
-    name: "Long sleeve t-shirt",
-    image:"https://i5.walmartimages.com/asr/3655bc7b-48e5-453c-a494-f1ddabeb7f92_1.9838d30a904832448a4d13b9d3edd737.jpeg",
-    price: "₹150000",
-    rating: 4.9,
-  },
-];
+  const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
 
-export default function Electronics() {
+}
+   }
   return (
     <Outlet>
-      <div className="px-4 md:px-6 py-6">
-      <h3 className='p-2 text-md md:text-3xl font-bold md:p-4'> 
-        "Explore Top Rated Products "
-         </h3>
-
-        {/* GRID layout for two rows */}
-        <div className="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-6   gap-6">
-          {topRated.map((item,i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out"
-            >
-           <Link to={`/toprated-Singlepage/${item.id}`}>
-           <div className="overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h- md:h-60 object-cove hover:scale-110 transition-transform duration-300 ease-in-out"
-                />
-              </div></Link>
-              <div className="p-4 text-center">
-                <h3 className="text-lg font-bold">{item.name}</h3>
-                <p className="text-pink-600 font-semibold">{item.price}</p>
+      <div className="  dark:bg-gray-900  dark:text-white">
+        <Toaster position="top-right" reverseOrder={false} />
+        <div className="  p-4 max-w-6xl mx-auto">
+          <h1 className="text-xl md:text-3xl font-bold mb-6 text-center">
+            Top Rated
+          </h1>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+            {products?.map((product, index) => (
+              <div
+                key={product._id}
+                className="dark:border rounded-xl shadow-md hover:shadow-lg hover:scale-[1.03] transition-transform overflow-hidden"
+              >
+                <Link to={`/toprated-Singlepage/${product._id}`}>
+                  <img
+                    src={product.imgsrc}
+                    alt={product.title}
+                    className="w-full  h-40 object-"
+                  />
+                </Link>
+                <div className="p-3 flex flex-col gap-2">
+                  <div className="flex justify-between text-sm font-medium">
+                    <h2>{product.title}</h2>
+                    <span className="text-red-600 font-semibold">
+                    ₹.  {product.price}
+                    </span>
+                  </div>
+                  {/* <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <Star
+                      key={index}
+                      size={14}
+                      fill={index < Math.floor(product.rating) ? "#facc15" : "none"}
+                      strokeWidth={1}
+                    />
+                  ))}
+                </div> */}
+                  <button
+                    onClick={() =>
+                      CartAddProducts(
+                        product._id,
+                        product.title,
+                        product.price,
+                        product.qty,
+                        product.imgsrc
+                      )
+                    }
+                    className="mt-1 w-full flex items-center justify-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-sm py-1.5 rounded-md transition"
+                  >
+                    Add to cart
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </Outlet>

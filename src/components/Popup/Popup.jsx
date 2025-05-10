@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
 const Popup = ({ orderPopup, setOrderPopup }) => {
@@ -51,4 +51,4 @@ const Popup = ({ orderPopup, setOrderPopup }) => {
   );
 };
 
-export default Popup;
+export default memo(Popup);

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, memo } from "react";
 import ContextProvider from "../context/ContextProvider";
 import axios from "axios";
 import { LogIn, User } from "lucide-react";
@@ -50,7 +50,7 @@ const AllUsers = () => {
           <tbody>
             {localUsers.length > 0 ? (
               localUsers.map((user, index) => (
-                <tr key={user.id} className="border-t text-sm hover:bg-gray-50">
+                <tr key={index} className="border-t text-sm hover:bg-gray-50">
                   <td className="p-4 font-medium">{index + 1}</td>
                   <td className="p-4 text-gray-600">{user.name}</td>
                   <td className="p-4 font-semibold">${user.email}</td>
@@ -79,4 +79,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default memo(AllUsers);

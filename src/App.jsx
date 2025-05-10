@@ -20,6 +20,7 @@ import Signup  from './components/user/Signup';
 import DashBoard from "./components/admin/DashBoard";
 import ProtectRoute from "./components/admin/ProtectRoute";
 import AllProducts from "./components/Allproduct/AllProducts";
+import AllSinglepage from "./components/singlepage/AllSinglepage";
 
 const App = () => {
   return (
@@ -36,10 +37,11 @@ const App = () => {
         <Route path="/top-rated" element={<TopRated />} />
         <Route path="/trending" element={<Trending />} />
         <Route path="/allproducts" element={<AllProducts />} />
+        <Route path="/allSinglepage/:id" element={<AllSinglepage />} />
 
 
 
-        <Route path="/singlepage/:id" element={<SingleProductKids />} />
+        <Route path="/singlepagekids/:id" element={<SingleProductKids />} />
         <Route path="/MenSinglepage/:id" element={<MenSinglepage />} />
         <Route  path="/electronicSinglepage/:id" element={<ElectronicSinglepage />}/>
         <Route  path="/womenSinglepage/:id" element={<WomenSinglepage />}/>

@@ -1,66 +1,57 @@
-import React from "react";
 import Outlet from '../Outlet';
-import { ShoppingCart, Star } from "lucide-react";
-import { Link } from "react-router-dom";
-  
-  const trendingProducts = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    price: "₹1999",
-    image: "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6267/6267219_rd.jpg",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Smart Watch",
-    price: "₹1499",
-    image: "https://m.media-amazon.com/images/I/61ftG19NACL._AC_SL1500_.jpg",
-    rating: 4.7,
-  },
-  {
-    id: 3,
-    name: "Running Shoes",
-    price: "₹890",
-    image: "https://media.landmarkshops.in/cdn-cgi/image/h=831,w=615,q=85,fit=cover/max-new/1000014449206-Multi-MULTI-1000014449206_01-2100.jpg",
-    rating: 4.3,
-  },
-  {
-    id: 4,
-    name: "Bluetooth Speaker",
-    price: "₹3000",
-    image: "https://i5.walmartimages.com/asr/afa9d092-f123-4a87-bee7-957d275b0fa2_1.54d062626b9d627d399adeba9a555418.jpeg",
-    rating: 4.6,
-  },
-];
-
+import React,{useContext} from "react";
+import { Link } from 'react-router-dom';
+import ContextProvider from "../context/ContextProvider";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie"
+import { useNavigate } from "react-router-dom";
 export default function Trending() {
+    const { products ,addToCart } = useContext(ContextProvider);
+    console.log(products);
+   const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
+  
+  const navigate = useNavigate()
+   const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
+//check if user is login then it possible to add cart else redirects to login page
+if (token) {
+  // console.log("yes token is exists :",token);
+   let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
+if (addproduct) {
+  toast.success("product added cart")
+    }
+}else{
+  toast.error("user not login ,please Login first")
+  navigate('/login')
+}
+}
   return (
     <Outlet>
-      <div className="p-4 max-w-6xl mx-auto">
+      <div className="  dark:bg-gray-900  dark:text-white">
+             <Toaster position="top-right" reverseOrder={false} />
+         <div className="  p-4 max-w-6xl mx-auto">
         <h1 className="text-xl md:text-3xl font-bold mb-6 text-center">
-          Trending Products
+   Trending Products
         </h1>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-          {trendingProducts.map((product) => (
+          {products?.map((product,index) => (
             <div
-              key={product.id}
-              className="bg-white rounded-xl shadow-md hover:scale-105 transition-transform overflow-hidden"
+              key={product._id}
+              className="dark:border rounded-xl shadow-md hover:shadow-lg hover:scale-[1.03] transition-transform overflow-hidden"
             >
-              <Link to={`/TrendingSinglepage/${product.id}`}>   
+              <Link to={`/TrendingSinglepage/${product._id}`}>
               <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-40 md:h-52 "
+                src={product.imgsrc}
+                alt={product.title}
+                className="w-full  h-40 object-"
               />
               </Link>
-              
               <div className="p-3 flex flex-col gap-2">
                 <div className="flex justify-between text-sm font-medium">
-                  <h2>{product.name}</h2>
-                  <span className="text-green-600 font-semibold">{product.price}</span>
+                  <h2>{product.title}</h2>
+                  <span className="text-red-600 font-semibold">
+                    ₹.{product.price}</span>
                 </div>
-                <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                {/* <div className="flex items-center gap-1 text-yellow-500 text-xs">
                   {Array.from({ length: 5 }, (_, index) => (
                     <Star
                       key={index}
@@ -69,16 +60,17 @@ export default function Trending() {
                       strokeWidth={1}
                     />
                   ))}
-                </div>
-                <button className="mt-1 w-full flex items-center justify-center gap-1 bg-rose-600 hover:bg-rose-700 font-semibold text-white text-sm py-1.5 rounded-md transition">
-                  <ShoppingCart size={14} /> Add to Cart
+                </div> */}
+                <button
+                 onClick={()=>CartAddProducts(product._id,product.title, product.price, product.qty, product.imgsrc)}
+                className="mt-1 w-full flex items-center justify-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-sm py-1.5 rounded-md transition">
+                  Add  to  cart
                 </button>
               </div>
             </div>
           ))}
         </div>
-
-        
+      </div>
       </div>
     </Outlet>
   );

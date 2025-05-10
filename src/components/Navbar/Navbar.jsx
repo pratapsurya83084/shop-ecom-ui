@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 import DarkMode from "./DarkMode";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { list, parse } from "postcss";
@@ -12,48 +12,18 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import AdminLogin from "../admin/AdminLogin";
+import { Dialog, Transition } from "@headlessui/react";
+import { RxCross2 } from "react-icons/rx";
 
-const Menu = [
-  {
-    id: 3,
-    name: "Kids Wear",
-    link: "/#",
-  },
-  {
-    id: 3,
-    name: "Mens Wear",
-    link: "/#",
-  },
-  {
-    id: 3,
-    name: "Electronics",
-    link: "/#",
-  },
-];
 
-const DropdownLinks = [
-  {
-    id: 1,
-    name: "Trending Products",
-    link: "/#",
-  },
-  {
-    id: 2,
-    name: "Best Selling",
-    link: "/#",
-  },
-  {
-    id: 3,
-    name: "Top Rated",
-    link: "/#",
-  },
-];
+
+
 
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
   const SearchProd = (e) => {
@@ -62,7 +32,7 @@ const Navbar = ({ handleOrderPopup }) => {
   };
 
   const adminCookie = Cookies.get("adminToken");
-  // console.log(adminCookie);
+  // console.log(adminCookie ? "ff" : "no");
 
   const navigate = useNavigate();
   const [user, setUser] = useState();
@@ -145,29 +115,7 @@ const Navbar = ({ handleOrderPopup }) => {
               Shopsy
             </Link>
 
-            {/* admin name */}
-            {adminCookie ? (
-              <div className="px-2 mt-2">
-                {" "}
-                <Link to="/dashboard">Dashboard </Link>
-              </div>
-            ) : (
-              <div>
-                <ul className="hidden md:flex p-2 md:ml-40">
-                  <li
-                    className="list-none cursor-pointer underline"
-                    onClick={() => setShowModal(true)}
-                  >
-                    adminLogin
-                  </li>
-                </ul>
-
-                <AdminLogin
-                  isOpen={showModal}
-                  onClose={() => setShowModal(false)}
-                />
-              </div>
-            )}
+           
           </div>
 
           {/* search bar */}
@@ -186,19 +134,21 @@ const Navbar = ({ handleOrderPopup }) => {
               <IoMdSearch className="text-gray-500 group-hover:text-primary absolute top-1/2 -translate-y-1/2 right-3" />
             </div>
 
-            {/* order button */}
-            <button
-              onClick={() => handleOrderPopup()}
-              className="hidden md:flex  bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full  items-center gap-3 group"
-            >
-              <span className="group-hover:block hidden transition-all duration-200">
-                Order
-              </span>
-              <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
-            </button>
+            {/* order button   show cart if cartlen > 0 ,else " " */}
+            <Link to="/cart">
+              <button
+                // onClick={() => handleOrderPopup()}
+                className="flex bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full  items-center gap-3 group"
+              >
+               
+                  0
+              
+                <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
+              </button>
+            </Link>
 
             {/* Darkmode Switch */}
-            <div>
+            <div className="hidden lg:flex">
               <DarkMode />
             </div>
             {googlAuthToken ? (
@@ -277,7 +227,7 @@ const Navbar = ({ handleOrderPopup }) => {
               <div>
                 <Link
                   to="/login"
-                  className="bg-orange-400 px-2 py-1 md:px-4 md:py-2 text-md font-bold text-white rounded-md"
+                  className="bg-orange-400 px-2 p-1 md:px-4 md:py-2 text-md font- text-white rounded-md"
                 >
                   Login
                 </Link>
@@ -288,7 +238,7 @@ const Navbar = ({ handleOrderPopup }) => {
       </div>
 
       {/* lower Navbar */}
-      <div data-aos="zoom-in" className="hidden md:flex justify-center">
+      <div className="hidden md:flex justify-center">
         <ul className="sm:flex hidden items-center md:gap-4">
           {/* {Menu.map((data) => ( */}
           <li>
@@ -323,15 +273,15 @@ const Navbar = ({ handleOrderPopup }) => {
               Womens
             </Link>
           </li>
-          {/* ))} */}
+
           {/* Simple Dropdown and Links */}
           <li className="group relative cursor-pointer">
-            <a href="#" className="flex items-center gap-[2px] py-2">
+            <div className="flex items-center gap-[2px] py-2">
               Trending Products
               <span>
                 <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
               </span>
-            </a>
+            </div>
             <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white p-2 text-black shadow-md">
               <ul>
                 {/* {DropdownLinks.map((data) => ( */}
@@ -360,7 +310,6 @@ const Navbar = ({ handleOrderPopup }) => {
                     Top Rated
                   </Link>
                 </li>
-                {/* ))} */}
               </ul>
             </div>
           </li>
@@ -368,51 +317,211 @@ const Navbar = ({ handleOrderPopup }) => {
       </div>
 
       {/* phone size navabr */}
-      <div data-aos="zoom-in" className="flex md:hidden justify-end">
-        <button onClick={showHamburger}>menu hamburger</button>
+
+      <div>
+        <div className="flex items-center">
+          <button
+            type="button"
+            className="rounded-md bg-white p-2 text-gray-400 md:hidden"
+            onClick={() => setOpen(true)}
+          >
+            <span className="sr-only">Open menu</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {isOpen && (
-        <div>
-          <div className="absolute top-0 left-0 w-[200px] text-center  bg-gray-200 text-black min-h-screen  p-">
-            <ul className="text-xl  py-10">
-              {Menu.map((data) => (
-                <li key={data.id}>
-                  <a
-                    href={data.link}
-                    className="inline-block px-4 hover:text-primary duration-200"
-                  >
-                    {data.name}
-                  </a>
-                </li>
-              ))}
-              {/* Simple Dropdown and Links */}
-              <li className="group relative cursor-pointer">
-                <a href="#" className="flex items-center gap-[2px] py-2">
-                  Trending Products
-                  <span>
-                    <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
-                  </span>
-                </a>
-                <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white p-2 text-black shadow-md">
-                  <ul>
-                    {DropdownLinks.map((data) => (
-                      <li key={data.id}>
-                        <a
-                          href={data.link}
-                          className="inline-block w-full rounded-md p-2 hover:bg-primary/20 "
+      {/* new navbar */}
+
+      <div className="  bg-white sticky top-0 z-50">
+        <Transition.Root show={open} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-40 lg:hidden"
+            onClose={setOpen}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter="transition-opacity ease-linear duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity ease-linear duration-300"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 z-40 flex">
+              <Transition.Child
+                as={Fragment}
+                enter="transition ease-in-out duration-300 transform"
+                enterFrom="-translate-x-full"
+                enterTo="translate-x-0"
+                leave="transition ease-in-out duration-300 transform"
+                leaveFrom="translate-x-0"
+                leaveTo="-translate-x-full"
+              >
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+                  <div className="flex px-4 pb-2 pt-10">
+                    <button
+                      type="button"
+                      className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      onClick={() => setOpen(false)}
+                    >
+                      <span className="sr-only">Close menu</span>
+                      <RxCross2 />
+                    </button>
+                  </div>
+
+                  {/* <div className="ml-auto flex items-center"></div> */}
+
+                  <div className="border-t border-gray-200 px-4 py-3">
+                    {/* list tabs in mobile desktop */}
+                    <div className="px-5  grid grid-cols-1 lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                      {/* <Link
+                        to={"/allproducts"}
+                        className="text-sm my-2 font-medium text-gray-700 "
+                      >
+                        All Products
+                      </Link> */}
+
+                      <Link
+                        to={"/kids"}
+                        className="text-sm my-2 font-medium text-gray-700 "
+                      >
+                        Kids Wear
+                      </Link>
+
+                      <Link
+                        to="/mens"
+                        className=" text-sm my-2 font-medium text-gray-700 cursor-pointer"
+                      >
+                        Men's
+                      </Link>
+                      <Link
+                        to="/electronics"
+                        className=" text-sm my-2 font-medium text-gray-700 cursor-pointer"
+                      >
+                        Electronics
+                      </Link>
+                      <Link
+                        to="/women"
+                        className=" text-sm my-2 font-medium text-gray-700 cursor-pointer"
+                      >
+                        Women's
+                      </Link>
+
+                      {!adminCookie ? (
+                        <div>
+                          <ul className=" p- ">
+                            <li
+                              className="list-none cursor-pointer underline"
+                              onClick={() => setShowModal(true)}
+                            >
+                              adminLogin
+                            </li>
+                          </ul>
+
+                          <AdminLogin
+                            isOpen={showModal}
+                            onClose={() => setShowModal(false)}
+                          />
+                        </div>
+                      ) : (
+                        <Link to="/dashboard">Dashboard</Link>
+                      )}
+
+                      <div className="group relative cursor-pointer">
+                        <div className="flex items-center gap-[2px] py-2">
+                          Trending Products
+                          <span>
+                            <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
+                          </span>
+                        </div>
+                        <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white p-2 text-black shadow-md">
+                          <ul>
+                            {/* {DropdownLinks.map((data) => ( */}
+                            <li>
+                              <Link
+                                to="/trending"
+                                className="inline-block w-full rounded-md p-2 hover:bg-primary/20 "
+                              >
+                                Trending Products
+                              </Link>
+                            </li>
+
+                            <li>
+                              <Link
+                                to="/best-selling"
+                                className="inline-block w-full rounded-md p-2 hover:bg-primary/20 "
+                              >
+                                Best Selling
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to="/top-rated"
+                                className="inline-block w-full rounded-md p-2 hover:bg-primary/20 "
+                              >
+                                Top Rated
+                              </Link>
+                            </li>
+                            {/* ))} */}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Cart symbol in mobile size menu*/}
+                      <div className="ml-4 flow-root lg:ml-6">
+                        <Link
+                          to={"/cart"}
+                          className="group -m-4 flex items-center my-2 p-"
                         >
-                          {data.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                            />
+                          </svg>
+
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-">
+                            cart
+                          </span>
+                          {/* <span className="sr-only">
+                            items in cart, view bag
+                          </span> */}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </Dialog>
+        </Transition.Root>
+      </div>
     </div>
   );
 };
