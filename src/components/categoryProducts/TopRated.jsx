@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function TopRated() {
   const { products, addToCart } = useContext(ContextProvider);
-  console.log(products);
+  // console.log(products);
 
   const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
   

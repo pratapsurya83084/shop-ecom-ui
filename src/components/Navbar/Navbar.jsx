@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 import DarkMode from "./DarkMode";
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { list, parse } from "postcss";
@@ -14,11 +14,25 @@ import toast from "react-hot-toast";
 import AdminLogin from "../admin/AdminLogin";
 import { Dialog, Transition } from "@headlessui/react";
 import { RxCross2 } from "react-icons/rx";
+import ContextProvider from "../context/ContextProvider";
+
 
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
+  const { GetUserCart } = useContext(ContextProvider);
+  const [cart, setCart] = useState();
 
-  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    async function getCart() {
+      const cartitem = await GetUserCart();
+      // console.log(cartitem.cart.items);
+      setCart(cartitem.cart.items);
+    }
+    getCart();
+  }, [cart]);
+
+  // console.log("get cart :",cart == null || cart.length == 0 ? "0" : cart.length);
+
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -71,10 +85,6 @@ const Navbar = ({ handleOrderPopup }) => {
 
   // console.log(token);
 
-  const showHamburger = () => {
-    setIsOpen(!isOpen);
-  };
-
   //formLogout
   const FormhandleSignOut = async () => {
     try {
@@ -110,6 +120,27 @@ const Navbar = ({ handleOrderPopup }) => {
               <img src={Logo} alt="Logo" className="w-10" />
               Shopsy
             </Link>
+            {!adminCookie ? (
+              <div className="hidden md:flex ">
+                <ul className=" pl-10  mt-3 ">
+                  <li
+                    className="list-none cursor-pointer "
+                    onClick={() => setShowModal(true)}
+                  >
+                    adminLogin
+                  </li>
+                </ul>
+
+                <AdminLogin
+                  isOpen={showModal}
+                  onClose={() => setShowModal(false)}
+                />
+              </div>
+            ) : (
+              <div className="hidden md:flex ">
+                <Link to="/dashboard">Dashboard</Link>
+              </div>
+            )}
           </div>
 
           {/* search bar */}
@@ -134,7 +165,7 @@ const Navbar = ({ handleOrderPopup }) => {
                 // onClick={() => handleOrderPopup()}
                 className="flex bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full  items-center gap-3 group"
               >
-                0
+                {cart == null || cart.length == 0 ? "" : cart.length}
                 <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
               </button>
             </Link>
@@ -162,15 +193,13 @@ const Navbar = ({ handleOrderPopup }) => {
 
                   <div className="absolute z-[9999] hidden group-hover:block w-[100px] rounded-md bg-white p- right-1 text-black shadow-md">
                     <ul>
-                     <li>
-                        <button
-                  
-                         >
+                      <li>
+                        <button>
                           <Link
                             to="/profile"
                             className="inline-block w-full rounded-md p-2 "
                           >
-                          Profile
+                            Profile
                           </Link>
                         </button>
                       </li>
@@ -184,8 +213,6 @@ const Navbar = ({ handleOrderPopup }) => {
                           </Link>
                         </button>
                       </li>
-
-                     
                     </ul>
                   </div>
                 </li>
@@ -218,7 +245,7 @@ const Navbar = ({ handleOrderPopup }) => {
                           </Link>
                         </button>
                       </li>
-                    
+
                       <li>
                         <button onClick={FormhandleSignOut}>
                           <Link

@@ -16,7 +16,7 @@ const WomenSinglepage = () => {
 
 const newArray = products?.filter((pid)=>pid._id === id)
   // products?.filter((pid) => pid._id == Number(id));
-  console.log(newArray);
+  // console.log(newArray);
   const navigate = useNavigate()
    const CartAddProducts= async(product_id,product_title, product_price, product_qty, product_imgsrc)=>{
 //check if user is login then it possible to add cart else redirects to login page
@@ -50,7 +50,7 @@ if (addproduct) {
                  </div>
      
                  {/* Product Details */}
-                 <div className="flex flex-col justify-center">
+                 <div className="p-3 flex flex-col justify-center">
                    <h2 className="text-xl font-bold mt-10 md:mt-0">
                      {product.title}
                    </h2>
@@ -58,7 +58,7 @@ if (addproduct) {
                    <p className="text-2xl text-red-600 font-semibold mb-6">
                      {product.offer}
                    </p>
-                   <p className="text-gray-600 mb-6">
+                   <p className=" mb-6">
                      This product is made with high-quality materials and offers you
                      the best comfort and style.
                    </p>

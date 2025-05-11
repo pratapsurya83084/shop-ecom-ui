@@ -167,6 +167,31 @@ const StateContext = ({ children }) => {
       );
     }
   };
+
+
+   //remmove from cart
+  const RemmoveFromCart = async (productid) => {
+    try {
+      const response = await axios.delete(`http://localhost:1000/api/cart/removeCart/${productid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // <-- MUST be lowercase and enabled!
+        }
+      );
+
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Server error occurred:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+
   return (
     <ContextProvider.Provider
       value={{
@@ -177,7 +202,8 @@ const StateContext = ({ children }) => {
         addToCart,
         GetUserCart,
         IncreaseQty,
-        DecreaseQty
+        DecreaseQty,
+        RemmoveFromCart
       }}
     >
       {children}
