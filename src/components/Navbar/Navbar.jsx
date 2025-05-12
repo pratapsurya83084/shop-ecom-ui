@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 import DarkMode from "./DarkMode";
-import React, { useState, useEffect, Fragment, useContext } from "react";
+import React, { useState, useEffect, Fragment, useContext, memo } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { list, parse } from "postcss";
@@ -19,17 +19,10 @@ import ContextProvider from "../context/ContextProvider";
 
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
-  const { GetUserCart } = useContext(ContextProvider);
-  const [cart, setCart] = useState();
+  const { GetUserCart ,cart } = useContext(ContextProvider);
+ 
+// console.log("cart length :",cart );
 
-  useEffect(() => {
-    async function getCart() {
-      const cartitem = await GetUserCart();
-      // console.log(cartitem.cart.items);
-      setCart(cartitem.cart.items);
-    }
-    getCart();
-  }, [cart]);
 
   // console.log("get cart :",cart == null || cart.length == 0 ? "0" : cart.length);
 
@@ -165,6 +158,7 @@ const Navbar = ({ handleOrderPopup }) => {
                 // onClick={() => handleOrderPopup()}
                 className="flex bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white  py-1 px-4 rounded-full  items-center gap-3 group"
               >
+                {/* {cart.length} */}
                 {cart == null || cart.length == 0 ? "" : cart.length}
                 <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
               </button>
@@ -539,4 +533,4 @@ const Navbar = ({ handleOrderPopup }) => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

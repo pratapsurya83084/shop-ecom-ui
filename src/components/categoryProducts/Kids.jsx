@@ -16,7 +16,8 @@ export default function Kids() {
 if (token) {
   // console.log("yes token is exists :",token);
    let addproduct = await  addToCart(product_id,product_title, product_price, product_qty, product_imgsrc);
-if (addproduct) {
+
+   if (addproduct) {
   toast.success("product added cart")
     }
 }else{

@@ -23,6 +23,7 @@ import AllProducts from "./components/Allproduct/AllProducts";
 import AllSinglepage from "./components/singlepage/AllSinglepage";
 import UserProfile from "./components/user/UserProfile";
 import Cart from "./components/user/Cart";
+import PaymentCheckout from './components/checkout/PaymentCheckout';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
+        
         <Route path="/profile" element={<UserProfile />} />
 
         <Route path="/kids" element={<Kids />} />
@@ -41,6 +43,11 @@ const App = () => {
         <Route path="/trending" element={<Trending />} />
         <Route path="/allproducts" element={<AllProducts />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<PaymentCheckout />} />
+
+
+
+
 
 
 

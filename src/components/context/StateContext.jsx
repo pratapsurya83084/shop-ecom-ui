@@ -4,6 +4,8 @@ import ContextProvider from "./ContextProvider";
 const StateContext = ({ children }) => {
   const [products, setProducts] = useState();
   const [Users, setUsers] = useState();
+  const [cart, setCart] = useState([]);
+  const [UserAddress, setUserAddress] = useState([]);
 
   const getAllProducts = async () => {
     try {
@@ -90,9 +92,12 @@ const StateContext = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true, // <-- MUST be lowercase and enabled!
+          withCredentials: true, //
         }
       );
+      // Immediately update the cart
+
+      updateCart();
 
       // console.log(response.data);
       return response.data.cart;
@@ -117,15 +122,24 @@ const StateContext = ({ children }) => {
       return api.data;
     } catch (error) {
       console.log("server error occured :", error);
+      return { cart: { items: [] } };
     }
   };
+  // Initialize cart data
+  useEffect(() => {
+    const fetchCart = async () => {
+      const cartData = await GetUserCart();
+      setCart(cartData.cart.items);
+    };
+    fetchCart();
+  }, []);
 
   //increase qty
-  const  DecreaseQty= async (qty , productid) => {
+  const DecreaseQty = async (qty, productid) => {
     try {
       const response = await axios.post(
         "http://localhost:1000/api/cart/--qty",
-        { qty , productid },
+        { qty, productid },
         {
           headers: {
             "Content-Type": "application/json",
@@ -133,6 +147,7 @@ const StateContext = ({ children }) => {
           withCredentials: true, // <-- MUST be lowercase and enabled!
         }
       );
+      updateCart();
 
       // console.log(response.data);
       return response.data;
@@ -144,12 +159,12 @@ const StateContext = ({ children }) => {
     }
   };
 
-    //Decrease qty
-  const IncreaseQty = async (qty,productid) => {
+  //Decrease qty
+  const IncreaseQty = async (qty, productid) => {
     try {
       const response = await axios.post(
         "http://localhost:1000/api/cart/--incqty",
-        { qty , productid },
+        { qty, productid },
         {
           headers: {
             "Content-Type": "application/json",
@@ -168,11 +183,11 @@ const StateContext = ({ children }) => {
     }
   };
 
-
-   //remmove from cart
+  //remmove from cart
   const RemmoveFromCart = async (productid) => {
     try {
-      const response = await axios.delete(`http://localhost:1000/api/cart/removeCart/${productid}`,
+      const response = await axios.delete(
+        `http://localhost:1000/api/cart/removeCart/${productid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -180,7 +195,7 @@ const StateContext = ({ children }) => {
           withCredentials: true, // <-- MUST be lowercase and enabled!
         }
       );
-
+      updateCart();
       // console.log(response.data);
       return response.data;
     } catch (error) {
@@ -191,6 +206,65 @@ const StateContext = ({ children }) => {
     }
   };
 
+  const updateCart = async () => {
+    //call removecart and add to cart function
+    const cartData = await GetUserCart();
+    setCart(cartData.cart.items);
+  };
+  //addaddress shipping
+  const Addressinfo = async (
+    fullname,
+    address,
+    city,
+    state,
+    country,
+    pincode,
+    phoneNumber
+  ) => {
+    if (
+      fullname &&
+      address &&
+      city &&
+      state &&
+      country &&
+      pincode &&
+      phoneNumber
+    ) {
+      const api = await axios.post(
+        `http://localhost:1000/api/address/addaddress`,
+        { fullname, address, city, state, country, pincode, phoneNumber },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+          },
+          withCredentials: true,
+        }
+      );
+      return api.data;
+    } else {
+      alert("Please fill all the fields");
+    }
+  };
+
+  // get address
+  const getUserAddress = async () => {
+    const api = await axios.get(`http://localhost:1000/api/address/getUserAddress`, {
+      headers: {
+        "Content-Type": "application/json",
+        Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+      },
+      withCredentials: true,
+    });
+
+    // console.log("user address : ", api.data.address);
+
+    setUserAddress(api.data.address);
+  };
+
+useEffect(()=>{
+  getUserAddress();
+},[]);
 
   return (
     <ContextProvider.Provider
@@ -203,7 +277,11 @@ const StateContext = ({ children }) => {
         GetUserCart,
         IncreaseQty,
         DecreaseQty,
-        RemmoveFromCart
+        RemmoveFromCart,
+        updateCart,
+        cart,
+        Addressinfo,
+        UserAddress
       }}
     >
       {children}

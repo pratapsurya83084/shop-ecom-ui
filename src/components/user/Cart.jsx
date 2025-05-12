@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import IfNotCartItem from "./IfNotCartItem";
 import toast from "react-hot-toast";
+import AdminLogin from "../admin/AdminLogin";
+import ProceedToCheckoutForm from "../checkout/ProceedToCheckoutForm";
 
 const cartItems = [
   {
@@ -29,32 +31,36 @@ const cartItems = [
 ];
 
 export default function Cart() {
-  const { GetUserCart, IncreaseQty, DecreaseQty, RemmoveFromCart } = useContext(ContextProvider);
+  const { GetUserCart, IncreaseQty, DecreaseQty, RemmoveFromCart, updateCart } =
+    useContext(ContextProvider);
   const [cartItem, setCartItem] = useState();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [address, setAddress] = useState({
+    fullname: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pincode: "",
+    phoneNumber: "",
+  });
   // console.log((cartItem==null)||(cartItem.length==0)?"yes empty":"not empty"); //same condition use below html
 
   //remove cart onclick function
   const RemoveProductFromCart = async (pid) => {
-    // Find the item to be removed before updating the state
-    const removedItem = cartItem.find((item) => item._id === pid);
-
-    // Optimistically update the state
-    // setCartItem((prev) => prev.filter((item) => item._id !== pid));
-
     try {
       const prodRemove = await RemmoveFromCart(pid);
       // console.log("Product removed from cart successfully:", prodRemove);
-        if (prodRemove.cart.items) {
-        toast.success("successfully remove product from cart")
-      }else{
-        toast.error("failed remove cart item")
+      if (prodRemove.cart.items) {
+        toast.success("successfully remove product from cart");
+      } else {
+        toast.error("failed remove cart item");
       }
       let afterRemovecart = await GetUserCart(); //get allitem after remove
       //  console.log("after remove cart is :",afterRemovecart);
 
       setCartItem(afterRemovecart.cart.items); //set updated cart
-    
     } catch (error) {
       console.error("Failed to remove product:", error);
     }
@@ -68,20 +74,6 @@ export default function Cart() {
     };
     fetCartProduct();
   }, []);
-
-  const subtotal = cartItems.reduce(
-    (sum, item) =>
-      sum +
-      (item.offerPrice && item.inStock
-        ? item.offerPrice * (item.quantity || 1)
-        : 0),
-    0
-  );
-
-  const discount = 711;
-  const platformFee = 3;
-  const deliveryCharge = 0;
-  const total = subtotal + platformFee + deliveryCharge;
 
   async function Increaseqty(qty, pid) {
     if (!qty || !pid) return;
@@ -105,6 +97,8 @@ export default function Cart() {
 
   async function Decreaseqty(qty, pid) {
     if (!qty || !pid) return;
+    let a = await updateCart();
+    // console.log("cart dec  with 0 len :",a);
 
     // Optimistic local update
     setCartItem((prev) =>
@@ -114,7 +108,11 @@ export default function Cart() {
     );
 
     try {
-      await DecreaseQty(qty, pid);
+      let decQty = await DecreaseQty(qty, pid);
+      console.log("dec :", decQty.cart.items);
+
+      // console.log(decQty.cart.items == null || decQty.cart.items.length == 0 ? "yes empty" : "not empty" );
+      setCartItem(decQty.cart.items);
     } catch (err) {
       console.error("Decrease failed", err);
     }
@@ -132,6 +130,20 @@ export default function Cart() {
   const handleLoginRedirect = () => {
     navigate("/login");
   };
+
+  const subtotal = cartItems.reduce(
+    (sum, item) =>
+      sum +
+      (item.offerPrice && item.inStock
+        ? item.offerPrice * (item.quantity || 1)
+        : 0),
+    0
+  );
+
+  const discount = 711;
+  const platformFee = 3;
+  const deliveryCharge = 0;
+  const total = subtotal + platformFee + deliveryCharge;
 
   return (
     <Outlet>
@@ -265,9 +277,19 @@ export default function Cart() {
                   You will save ₹{discount + 40} on this order
                 </p>
               </div>
-              <button className="mt-6 w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600">
-                PLACE ORDER
-              </button>
+              <div>
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="mt-6 w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600"
+                >
+                  Proceed to checkout
+                </button>
+
+                <ProceedToCheckoutForm
+                  isOpen={showModal}
+                  onClose={() => setShowModal(false)}
+                />
+              </div>
             </div>
           </div>
         </div>

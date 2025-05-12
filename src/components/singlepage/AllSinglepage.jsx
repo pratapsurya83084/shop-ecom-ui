@@ -21,7 +21,7 @@ const AllSinglepage = () => {
 
 const newArray = products?.filter((pid)=>pid._id === id)
   // products?.filter((pid) => pid._id == Number(id));
-  console.log(newArray);
+  // console.log(newArray);
   // console.log(products);
 
   //onlclick  buuton
