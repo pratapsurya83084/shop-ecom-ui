@@ -16,13 +16,11 @@ import { Dialog, Transition } from "@headlessui/react";
 import { RxCross2 } from "react-icons/rx";
 import ContextProvider from "../context/ContextProvider";
 
-
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
-  const { GetUserCart ,cart } = useContext(ContextProvider);
- 
-// console.log("cart length :",cart );
+  const { GetUserCart, cart } = useContext(ContextProvider);
 
+  // console.log("cart length :",cart );
 
   // console.log("get cart :",cart == null || cart.length == 0 ? "0" : cart.length);
 
@@ -102,7 +100,7 @@ const Navbar = ({ handleOrderPopup }) => {
   };
 
   return (
-    <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
+    <div className="shadow-md  dark:bg-gray-900 dark:text-white duration-200 relative z-40">
       <Toaster position="top-right" reverseOrder={false} />
       {/* upper Navbar */}
       <div className="bg-primary/40 py-2">
@@ -353,7 +351,7 @@ const Navbar = ({ handleOrderPopup }) => {
       {/* phone size navabr */}
 
       <div>
-        <div className="flex items-center">
+        <div className=" flex items-center">
           <button
             type="button"
             className="rounded-md bg-white p-2 m-2 text-gray-400 md:hidden"
@@ -379,9 +377,8 @@ const Navbar = ({ handleOrderPopup }) => {
         </div>
       </div>
 
-      {/* new navbar */}
-
-      <div className="  bg-white sticky top-0 z-50">
+      {/* new navbar  phoneSize*/}
+      <div className="   sticky top-0 z-50">
         <Transition.Root show={open} as={Fragment}>
           <Dialog
             as="div"
@@ -410,11 +407,11 @@ const Navbar = ({ handleOrderPopup }) => {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto dark:bg-black bg-white dark:text-white pb-12 shadow-xl">
                   <div className="flex px-4 pb-2 pt-10">
                     <button
                       type="button"
-                      className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      className=" inline-flex items-center justify-center rounded-md p-2 dark:border  border border-gray-500 -m-2 mb-1"
                       onClick={() => setOpen(false)}
                     >
                       <span className="sr-only">Close menu</span>
@@ -424,7 +421,7 @@ const Navbar = ({ handleOrderPopup }) => {
 
                   {/* <div className="ml-auto flex items-center"></div> */}
 
-                  <div className="border-t border-gray-200 px-4 py-3">
+                  <div className="border-t  border-gray-200 px-4 py-3">
                     {/* list tabs in mobile desktop */}
                     <div className="px-5  grid grid-cols-1 lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                       {/* <Link
@@ -436,26 +433,26 @@ const Navbar = ({ handleOrderPopup }) => {
 
                       <Link
                         to={"/kids"}
-                        className="text-sm my-2 font-medium text-gray-700 "
+                        className="text-sm my-2 font-medium  "
                       >
                         Kids Wear
                       </Link>
 
                       <Link
                         to="/mens"
-                        className=" text-sm my-2 font-medium text-gray-700 cursor-pointer"
+                        className=" text-sm my-2 font-medium  cursor-pointer"
                       >
                         Men's
                       </Link>
                       <Link
                         to="/electronics"
-                        className=" text-sm my-2 font-medium text-gray-700 cursor-pointer"
+                        className=" text-sm my-2 font-medium  cursor-pointer"
                       >
                         Electronics
                       </Link>
                       <Link
                         to="/women"
-                        className=" text-sm my-2 font-medium text-gray-700 cursor-pointer"
+                        className=" text-sm my-2 font-medium  cursor-pointer"
                       >
                         Women's
                       </Link>
@@ -487,7 +484,7 @@ const Navbar = ({ handleOrderPopup }) => {
                             <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
                           </span>
                         </div>
-                        <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white p-2 text-black shadow-md">
+                        <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md  p-2 dark:border shadow-md">
                           <ul>
                             {/* {DropdownLinks.map((data) => ( */}
                             <li>
@@ -519,7 +516,9 @@ const Navbar = ({ handleOrderPopup }) => {
                           </ul>
                         </div>
                       </div>
-
+                      <div className="lg:hidden flex">
+                        <DarkMode />
+                      </div>
                       {/* Cart symbol in mobile size menu*/}
                     </div>
                   </div>

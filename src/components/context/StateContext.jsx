@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ContextProvider from "./ContextProvider";
+
 const StateContext = ({ children }) => {
   const [products, setProducts] = useState();
   const [Users, setUsers] = useState();
   const [cart, setCart] = useState([]);
   const [UserAddress, setUserAddress] = useState([]);
-
+  const [allorder, setAllorder] = useState([]);
+ 
+  const url = "http://localhost:1000/api";
   const getAllProducts = async () => {
     try {
       const api = await axios.get(
@@ -249,22 +252,107 @@ const StateContext = ({ children }) => {
 
   // get address
   const getUserAddress = async () => {
-    const api = await axios.get(`http://localhost:1000/api/address/getUserAddress`, {
-      headers: {
-        "Content-Type": "application/json",
-        Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
-      },
-      withCredentials: true,
-    });
+    const api = await axios.get(
+      `http://localhost:1000/api/address/getUserAddress`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+        },
+        withCredentials: true,
+      }
+    );
 
     // console.log("user address : ", api.data.address);
 
     setUserAddress(api.data.address);
   };
 
-useEffect(()=>{
-  getUserAddress();
-},[]);
+//all user order
+  const getAllOrder = async () => {
+    try {
+      const api = await axios.get(`${url}/payment/allorder`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      // console.log(api.data);
+
+      return api.data;
+
+      // setAllorder(api.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllOrder();
+  }, []);
+
+  useEffect(() => {
+    getUserAddress();
+  }, []);
+
+
+
+
+
+  const GetuserOrder = async () => {
+    try {
+      const api = await axios.get(`http://localhost:1000/api/payment/userorder`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      // console.log(api.data);
+
+      return api.data;
+
+      // setAllorder(api.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+    const clearCartAll = async () => {
+    try {
+      const api = await axios.delete(`${url}/cart/clear`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+    
+      console.log(api.data);
+      return api.data;
+
+    } catch (error) {
+      console.log("failed clear cart : ", error.message);
+    }
+  };
+
+const GetuserProfile = async () => {
+  try {
+    const api = await axios.get(`http://localhost:1000/api/user/profile`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    // console.log("User Profile Data:", api.data);
+    return api.data;
+  } catch (error) {
+    console.log("Error fetching user profile:", error);
+    return null;
+  }
+};
+
+
 
   return (
     <ContextProvider.Provider
@@ -281,7 +369,13 @@ useEffect(()=>{
         updateCart,
         cart,
         Addressinfo,
-        UserAddress
+        UserAddress,
+        getAllOrder,
+        GetuserOrder,
+        GetuserProfile,
+        
+        url,
+        clearCartAll
       }}
     >
       {children}

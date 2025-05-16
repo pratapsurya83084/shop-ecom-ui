@@ -130,21 +130,17 @@ export default function Cart() {
   const handleLoginRedirect = () => {
     navigate("/login");
   };
+// console.log(cartItem);
 
-  const subtotal = cartItems.reduce(
-    (sum, item) =>
-      sum +
-      (item.offerPrice && item.inStock
-        ? item.offerPrice * (item.quantity || 1)
-        : 0),
-    0
-  );
+// Calculate total price
+const totalPrice = cartItem?.reduce((acc, item) => {
+  return acc + item.price * item.qty;
+}, 0);
 
-  const discount = 711;
-  const platformFee = 3;
-  const deliveryCharge = 0;
-  const total = subtotal + platformFee + deliveryCharge;
 
+console.log("Total Price:", totalPrice);
+const platformFee = 20;
+const totalPay = totalPrice + 10;
   return (
     <Outlet>
       <div className="dark:bg-black    dark:text-white">
@@ -253,29 +249,21 @@ export default function Cart() {
               <h3 className="text-lg font-semibold mb-4">PRICE DETAILS</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span>Price ({cartItems.length} item)</span>
-                  <span>₹{cartItems[1].price}</span>
+                  <span>Price cartItems.length item</span>
+                  <span>₹. {totalPrice}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Discount</span>
-                  <span className="text-green-600">− ₹{discount}</span>
-                </div>
+               
                 <div className="flex justify-between">
                   <span>Platform Fee</span>
-                  <span>₹{platformFee}</span>
+                  <span className="text-green-600">₹. {platformFee}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Delivery Charges</span>
-                  <span className="text-green-600 line-through">₹40</span>
-                </div>
+               
                 <hr />
                 <div className="flex justify-between font-semibold text-base">
                   <span>Total Amount</span>
-                  <span>₹{total}</span>
+                  <span>₹. {totalPay}</span>
                 </div>
-                <p className="text-green-600 text-sm mt-2">
-                  You will save ₹{discount + 40} on this order
-                </p>
+              
               </div>
               <div>
                 <button

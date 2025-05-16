@@ -24,6 +24,9 @@ import AllSinglepage from "./components/singlepage/AllSinglepage";
 import UserProfile from "./components/user/UserProfile";
 import Cart from "./components/user/Cart";
 import PaymentCheckout from './components/checkout/PaymentCheckout';
+import OrderConfirmation from "./components/orderConfirmation/OrderConfirmation";
+import PotectUserRoute from "./components/protectRoutes/PotectUserRoute";
+import Error404 from "./components/Error404";
 
 const App = () => {
   return (
@@ -33,7 +36,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
         
-        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/profile" element={<PotectUserRoute> <UserProfile />  </PotectUserRoute> } />
 
         <Route path="/kids" element={<Kids />} />
         <Route path="/best-selling" element={<BestSelling />} />
@@ -44,7 +47,7 @@ const App = () => {
         <Route path="/allproducts" element={<AllProducts />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<PaymentCheckout />} />
-
+        <Route path="/orderconfirmation" element={<OrderConfirmation />} />
 
 
 
@@ -63,6 +66,7 @@ const App = () => {
         <Route  path="/toprated-Singlepage/:id" element={<TopratedSinglepage />}/>
        
         <Route  path="/dashboard" element={ <ProtectRoute> <DashBoard />   </ProtectRoute>}/>
+        <Route  path="*" element={ <Error404 /> }/>
       
       
 

@@ -44,21 +44,20 @@ const navigate = useNavigate();
       console.log("your confirm address is submitted :",apiAddres.UserData);
       if (apiAddres.UserData) {
         toast.success("address confirm successfull")
-        navigate("/checkout")
+        // navigate("/checkout")
+        window.location.href="/checkout"
       }
 
     }
   };
 
-  const handleOldAddress = () => {
-    console.log("Using old address");
-  };
+ 
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+    <div className="  fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg- dark:bg-slate-900    bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Proceed to Checkout</h2>
           <button
@@ -68,7 +67,7 @@ const navigate = useNavigate();
             &times;
           </button>
         </div>
-        <form className="space-y-">
+        <form className="space-y- ">
               <Toaster position="top-right" reverseOrder={false} />
           <div>
             
@@ -78,7 +77,7 @@ const navigate = useNavigate();
               name="fullname"
               value={address.fullname}
               onChange={handleInputChange}
-              className="w-full p-2 text-black border border-gray-300 rounded"
+              className="w-full p-2 dark:bg-slate-800 dark:text-white border border-gray-300 rounded"
               placeholder="Enter your full name"
             />
             {errors.fullname && (
@@ -91,7 +90,7 @@ const navigate = useNavigate();
               name="address"
               value={address.address}
               onChange={handleInputChange}
-              className="w-full p-2 text-black border border-gray-300 rounded"
+              className="w-full p-2 dark:bg-slate-800 dark:text-white border border-gray-300 rounded"
               placeholder="Enter your address"
             />
             {errors.address && (
@@ -106,7 +105,7 @@ const navigate = useNavigate();
                 name="city"
                 value={address.city}
                 onChange={handleInputChange}
-                className="w-full p-2 border text-black border-gray-300 rounded"
+                className="w-full p-2 border dark:bg-slate-800 dark:text-white border-gray-300 rounded"
                 placeholder="City"
               />
               {errors.city && (
@@ -120,7 +119,7 @@ const navigate = useNavigate();
                 name="state"
                 value={address.state}
                 onChange={handleInputChange}
-                className="w-full p-2 border text-black border-gray-300 rounded"
+                className="w-full p-2 border dark:bg-slate-800 dark:text-white border-gray-300 rounded"
                 placeholder="State"
               />
               {errors.state && (
@@ -136,7 +135,7 @@ const navigate = useNavigate();
                 name="country"
                 value={address.country}
                 onChange={handleInputChange}
-                className="w-full p-2 text-black border border-gray-300 rounded"
+                className="w-full p-2 dark:bg-slate-800 dark:text-white border border-gray-300 rounded"
                 placeholder="Country"
               />
               {errors.country && (
@@ -150,7 +149,7 @@ const navigate = useNavigate();
                 name="pincode"
                 value={address.pincode}
                 onChange={handleInputChange}
-                className="w-full p-2 text-black border border-gray-300 rounded"
+                className="w-full p-2 dark:bg-slate-800 dark:text-white border border-gray-300 rounded"
                 placeholder="Pincode"
               />
               {errors.pincode && (
@@ -167,7 +166,7 @@ const navigate = useNavigate();
               name="phoneNumber"
               value={address.phoneNumber}
               onChange={handleInputChange}
-              className="w-full p-2 border text-black border-gray-300 rounded"
+              className="w-full p-2 border dark:bg-slate-800 dark:text-white border-gray-300 rounded"
               placeholder="Phone Number"
             />
             {errors.phoneNumber && (
@@ -182,12 +181,7 @@ const navigate = useNavigate();
           >
             Confirm Order
           </button>
-          <button
-            onClick={handleOldAddress}
-            className="w-full bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
-          >
-            Old Address
-          </button>
+        
         </div>
       </div>
     </div>
