@@ -4,7 +4,8 @@ import { Toast } from "@chakra-ui/react";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 const AddProduct = () => {
-   const url ="https://mernstack1stproject-7.onrender.com/api" 
+   const url ="http://localhost:1000/api"
+  //  "https://mernstack1stproject-7.onrender.com/api" 
   const [newProduct, setProducts] = useState({
     title: "",
     description: "",
@@ -112,6 +113,7 @@ const AddProduct = () => {
           <option value="trending">Trending</option>
           <option value="kids">Kids</option>
           <option value="bestselling">Best Selling</option>
+          <option value="toprated">Top Rated</option>
         </select>
         <label htmlFor="category">Enter product price:</label>
         <input

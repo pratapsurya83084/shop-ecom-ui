@@ -15,7 +15,8 @@ const Login = () => {
   //google login
 
 const [googlCreadential,setGoogleLoginCreadential]=useState();
-const url ="https://mernstack1stproject-7.onrender.com/api" 
+   const url ="http://localhost:1000/api"
+// ="https://mernstack1stproject-7.onrender.com/api" 
 let navigate = useNavigate();
 const Formtoken = Cookies.get("AuthToken") 
 // || Cookies.get("googleAuthToken");

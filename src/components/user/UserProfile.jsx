@@ -14,7 +14,8 @@ const UserProfile = () => {
   const [googleProfile, setGoogleprofile] = useState();
   const navigate = useNavigate();
   // console.log(googleProfile);
-const url ="https://mernstack1stproject-7.onrender.com/api" 
+     const url ="http://localhost:1000/api"
+// const url ="https://mernstack1stproject-7.onrender.com/api" 
   useEffect(() => {
     async function getProfile() {
       const getProfile = await GetuserProfile();
@@ -98,11 +99,12 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
   };
   return (
     <Outlet>
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="dark:bg-black dark:text-white ">
+   <div className=" max-w-6xl mx-auto p-6 ">
         <Toaster position="top-right" reverseOrder={false} />
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Sidebar */}
-          <div className="bg-white shadow rounded-lg p-4 h-fit">
+          <div className="dark:text-white  dark:border border-gray-500 shadow rounded-lg p-4 h-fit">
             <div className="flex flex-col items-center text-center">
               <img
                 src={"profile.jpg"}
@@ -112,12 +114,12 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
               <h2 className="text-lg font-semibold">
                 {profile ? profile?.name : googleProfile?.name}
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm dark:text-white">
                 {profile ? profile?.email : googleProfile?.email}
               </p>
             </div>
             <nav className="mt-6">
-              <ul className="space-y-2 text-sm font-medium text-gray-700">
+              <ul className="space-y-2 text-sm font-medium dark:text-white">
                 <li>
                   <ol className="w-full text-left hover:text-blue-600">
                     My Orders : total order({UserOrder?.length}){" "}
@@ -128,12 +130,12 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
           </div>
 
           {/* Main Content */}
-          <div className="md:col-span-3 space-y-6">
-            <div className="bg-white shadow rounded-lg p-6">
+          <div className="md:col-span-3 space-y-6 ">
+            <div className="bg-  dark:border border-gray-500 shadow rounded-lg p-6">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-xl font-bold">Profile Information</h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm dark:text-white">
                     View your personal details
                   </p>
                 </div>
@@ -146,24 +148,24 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
-                  <label className="text-sm text-gray-500">Full Name</label>
-                  <p className="text-gray-800">
+                  <label className="text-sm dark:text-white">Full Name</label>
+                  <p className="dark:text-white">
                     {profile ? profile?.name : googleProfile?.name}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Email Address</label>
-                  <p className="text-gray-800">
+                  <label className="text-sm dark:text-white">Email Address</label>
+                  <p className="dark:text-white">
                     {profile ? profile?.email : googleProfile?.email}
                   </p>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-500">
+                  <label className="text-sm dark:text-white">
                     Profile Created
                   </label>
 
-                  <p className="text-gray-800">
+                  <p className="dark:text-white">
                     {profile || googleProfile?.createdAt
                       ? new Date(
                           profile
@@ -180,7 +182,7 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
               </div>
             </div>
 
-            <div className="bg-white shadow rounded-lg p-6">
+            <div className="dark:bg-gray-900 dark:border border-gray-500 shadow rounded-lg p-6">
               <h3 className="text-xl font-bold mb-4">Order Summary</h3>
 
               <div>
@@ -188,18 +190,18 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
                   UserOrder?.map((order, orderIndex) => (
                     <div
                       key={orderIndex}
-                      className="mb-4 p-4 bg-white shadow-md rounded-lg"
+                      className="mb-4 p-4 bg- shadow-md dark:border border-gray-500 rounded-lg"
                     >
-                      <h2 className="text-lg font-semibold mb-2">
+                      <h2 className="text-lg dark:text-white font-semibold mb-2">
                         Order ID: {order?.order_id}
                       </h2>
-                      <h3 className="text-gray-600 mb-2">
+                      <h3 className="dark:text-white mb-2">
                         Payment ID: {order?.payment_id}
                       </h3>
-                      <h4 className="text-gray-600 mb-2">
+                      <h4 className="dark:text-white mb-2">
                         Total Amount: ₹{order?.amount}
                       </h4>
-                      <h5 className="text-gray-600 mb-2">
+                      <h5 className="dark:text-white mb-2">
                         Order Date:{" "}
                         {new Date(order?.orderDate).toLocaleDateString()}
                       </h5>
@@ -209,7 +211,7 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
                           order?.orderItems.map((item, itemIndex) => (
                             <div
                               key={itemIndex}
-                              className="flex items-center gap-4 p-2 bg-gray-100 rounded-lg"
+                              className="flex items-center gap-4 p-2 dark:text-white rounded-lg"
                             >
                               <img
                                 src={item.imgsrc}
@@ -226,7 +228,7 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
                             </div>
                           ))
                         ) : (
-                          <p className="text-gray-500">
+                          <p className="dark:text-white">
                             No items in this order.
                           </p>
                         )}
@@ -241,6 +243,9 @@ const url ="https://mernstack1stproject-7.onrender.com/api"
           </div>
         </div>
       </div>
+
+      </div>
+   
     </Outlet>
   );
 };

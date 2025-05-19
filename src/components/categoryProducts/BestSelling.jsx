@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 export default function BestSelling() {
   const { products, addToCart } = useContext(ContextProvider);
   // console.log(products);
+    const newArr = products?.filter((prod) => prod.category == "bestselling");
+      // console.log(newArr)
   const token = Cookies.get("AuthToken") || Cookies.get("googleAuthToken") ||Cookies.get("adminToken");
   
   const navigate = useNavigate()
@@ -33,7 +35,7 @@ if (addproduct) {
        Best Selling Products
           </h1>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-            {products?.map((product, index) => (
+            {newArr?.map((product, index) => (
               <div
                 key={product._id}
                 className="dark:border rounded-xl shadow-md hover:shadow-lg hover:scale-[1.03] transition-transform overflow-hidden"

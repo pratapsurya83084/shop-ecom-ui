@@ -9,7 +9,8 @@ const StateContext = ({ children }) => {
   const [UserAddress, setUserAddress] = useState([]);
   const [allorder, setAllorder] = useState([]);
  
-  const url ="https://mernstack1stproject-7.onrender.com/api" 
+  const url ="http://localhost:1000/api"
+  // "https://mernstack1stproject-7.onrender.com/api" 
   // "http://localhost:1000/api";
   const getAllProducts = async () => {
     try {

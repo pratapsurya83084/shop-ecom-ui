@@ -6,8 +6,8 @@ const Signup= () => {
     email: '',
     password: '',
   });
-
-  const url ="https://mernstack1stproject-7.onrender.com/api" 
+   const url ="http://localhost:1000/api"
+  // const url ="https://mernstack1stproject-7.onrender.com/api" 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,

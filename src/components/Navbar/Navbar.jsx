@@ -18,22 +18,37 @@ import ContextProvider from "../context/ContextProvider";
 
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
-  const { GetUserCart, cart } = useContext(ContextProvider);
-   const url ="https://mernstack1stproject-7.onrender.com/api" 
+  const { GetUserCart, cart, products } = useContext(ContextProvider);
+  const url = "http://localhost:1000/api";
+  //  "https://mernstack1stproject-7.onrender.com/api"
   // console.log("cart length :",cart );
 
   // console.log("get cart :",cart == null || cart.length == 0 ? "0" : cart.length);
 
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+  console.log(results);
 
-  const SearchProd = (e) => {
-    e.preventDefault();
-    console.log(search);
+  // const dummyData = ["Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape"];
+
+  // Handle search as the user types
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearch(query);
+
+    if (query.trim() !== "") {
+      const filteredResults = products.filter((item) =>
+        item.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setResults(filteredResults);
+    } else {
+      setResults([]); // Clear results when input is empty
+    }
   };
-
   const adminCookie = Cookies.get("adminToken");
   // console.log(adminCookie ? "ff" : "no");
+  // console.log(adminCookie);
 
   const navigate = useNavigate();
   const [user, setUser] = useState();
@@ -80,7 +95,7 @@ const Navbar = ({ handleOrderPopup }) => {
   const FormhandleSignOut = async () => {
     try {
       const logoutUser = await axios.post(
-         `${url}/user/formLogout`,
+        `${url}/user/formLogout`,
         {},
         { withCredentials: true }
       );
@@ -128,7 +143,7 @@ const Navbar = ({ handleOrderPopup }) => {
                 />
               </div>
             ) : (
-              <div className="hidden md:flex ">
+              <div className="hidden md:flex mt-2 pl-10">
                 <Link to="/dashboard">Dashboard</Link>
               </div>
             )}
@@ -136,18 +151,43 @@ const Navbar = ({ handleOrderPopup }) => {
 
           {/* search bar */}
           <div className="flex justify-between items-center gap-4">
-            <div className="relative group hidden sm:block">
-              <form onSubmit={SearchProd}>
+            <div className="flex flex-col items-center">
+              <div className="relative group hidden sm:block">
                 <input
                   type="text"
-                  placeholder="search"
+                  placeholder="Search..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-[200px] sm:w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-2 py-1 focus:outline-none focus:border-1 focus:border-primary dark:border-gray-500 dark:bg-gray-800  "
+                  onChange={handleSearch}
+                  className="w-[200px] sm:w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-2 py-1 focus:outline-none focus:border-primary dark:border-gray-500 dark:bg-gray-800"
                 />
-              </form>
 
-              <IoMdSearch className="text-gray-500 group-hover:text-primary absolute top-1/2 -translate-y-1/2 right-3" />
+                <IoMdSearch className="text-gray-500 group-hover:text-primary absolute top-1/2 -translate-y-1/2 right-3" />
+              </div>
+              {/* overflow-y-scroll */}
+              {/* Search Results */}
+              <div className="absolute top-10  shadow-md mt-3 w-96 rounded-lg  mx-3 text-black p-2 max-h-40 ">
+                {results.length > 0 ? (
+                  results.map((item) => (
+                    <div
+                      key={item._id}
+                      className="py-1 px-2 bg-white   hover:bg-gray-100 cursor-pointer flex  justify-between"
+                    >
+                      <Link to={"/"} className="flex ">
+                        <img
+                          className="h-10 p- "
+                          src={item.imgsrc}
+                          alt=""
+                          srcset=""
+                        />
+                        <span className="text-center p-4">{item.title}</span>
+                      </Link>
+                      {/* <span className="text-gray-500">${item.price}</span> */}
+                    </div>
+                  ))
+                ) : search.trim() !== "" ? (
+                  <div className="text-black bg-white">No results found</div>
+                ) : null}
+              </div>
             </div>
 
             {/* order button   show cart if cartlen > 0 ,else " " */}
@@ -431,10 +471,7 @@ const Navbar = ({ handleOrderPopup }) => {
                         All Products
                       </Link> */}
 
-                      <Link
-                        to={"/kids"}
-                        className="text-sm my-2 font-medium  "
-                      >
+                      <Link to={"/kids"} className="text-sm my-2 font-medium  ">
                         Kids Wear
                       </Link>
 

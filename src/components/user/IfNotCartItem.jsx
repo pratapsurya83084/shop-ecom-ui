@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const IfNotCartItem = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+
 
   return (
     <div className="dark:bg-black    dark:text-white">

@@ -6,7 +6,8 @@ import toast, { Toaster } from "react-hot-toast";
 const GetAllProducts = () => {
   const { products } = useContext(ContextProvider);
   const [localProducts, setLocalProducts] = useState([]);
-const url ="https://mernstack1stproject-7.onrender.com/api";
+const url ="http://localhost:1000/api"
+// "https://mernstack1stproject-7.onrender.com/api";
 
   useEffect(() => {
     setLocalProducts(products); // sync with context initially

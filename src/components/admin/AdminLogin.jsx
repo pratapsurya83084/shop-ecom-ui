@@ -9,7 +9,8 @@ const AdminLogin = ({ isOpen, onClose }) => {
   const [password, setpassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-    const url ="https://mernstack1stproject-7.onrender.com/api" 
+   const url = "http://localhost:1000/api"
+    // const url ="https://mernstack1stproject-7.onrender.com/api" 
 const navigate = useNavigate();
   if (!isOpen) return null;
 

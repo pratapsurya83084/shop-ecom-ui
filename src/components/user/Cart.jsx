@@ -8,27 +8,6 @@ import toast from "react-hot-toast";
 import AdminLogin from "../admin/AdminLogin";
 import ProceedToCheckoutForm from "../checkout/ProceedToCheckoutForm";
 
-const cartItems = [
-  {
-    id: 1,
-    name: "BRUTON Lite Casual Shoes Sneakers For Men",
-    image: "https://via.placeholder.com/80",
-    size: "8, White",
-    price: 899,
-    offerPrice: 0,
-    inStock: false,
-  },
-  {
-    id: 2,
-    name: "INTIMIFY Dark Spot Corrector Cream",
-    image: "https://via.placeholder.com/80",
-    price: 899,
-    offerPrice: 188,
-    quantity: 1,
-    delivery: "Mon May 19",
-    inStock: true,
-  },
-];
 
 export default function Cart() {
   const { GetUserCart, IncreaseQty, DecreaseQty, RemmoveFromCart, updateCart } =
