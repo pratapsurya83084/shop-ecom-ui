@@ -9,11 +9,12 @@ const StateContext = ({ children }) => {
   const [UserAddress, setUserAddress] = useState([]);
   const [allorder, setAllorder] = useState([]);
  
-  const url = "http://localhost:1000/api";
+  const url ="https://mernstack1stproject-7.onrender.com/api" 
+  // "http://localhost:1000/api";
   const getAllProducts = async () => {
     try {
       const api = await axios.get(
-        "http://localhost:1000/api/product/getallproduct"
+        `${url}/product/getallproduct`
       );
       setProducts(api.data.products);
 
@@ -31,7 +32,7 @@ const StateContext = ({ children }) => {
 
   const getAllUsers = async () => {
     try {
-      const api = await axios.get("  http://localhost:1000/api/user/allusers", {
+      const api = await axios.get(`${url}/user/allusers`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -55,7 +56,7 @@ const StateContext = ({ children }) => {
       }
 
       const api = await axios.delete(
-        `http://localhost:1000/api/user/deleteuser/${Userid}`,
+        `${url}/user/deleteuser/${Userid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -72,7 +73,7 @@ const StateContext = ({ children }) => {
   const GetUserOrders = async () => {
     try {
       const api = await axios.get(
-        `http://localhost:1000/api/payment/allorder`,
+       `${url}/payment/allorder`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -89,7 +90,7 @@ const StateContext = ({ children }) => {
   const addToCart = async (productid, title, price, qty, imgsrc) => {
     try {
       const response = await axios.post(
-        "http://localhost:1000/api/cart/add",
+       `${url}/cart/add`,
         { productid, title, price, qty, imgsrc },
         {
           headers: {
@@ -115,7 +116,7 @@ const StateContext = ({ children }) => {
   //get cart products
   const GetUserCart = async () => {
     try {
-      const api = await axios.get(`http://localhost:1000/api/cart/userCart`, {
+      const api = await axios.get(`${url}/cart/userCart`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -141,7 +142,7 @@ const StateContext = ({ children }) => {
   const DecreaseQty = async (qty, productid) => {
     try {
       const response = await axios.post(
-        "http://localhost:1000/api/cart/--qty",
+       `${url}/cart/--qty`,
         { qty, productid },
         {
           headers: {
@@ -166,7 +167,7 @@ const StateContext = ({ children }) => {
   const IncreaseQty = async (qty, productid) => {
     try {
       const response = await axios.post(
-        "http://localhost:1000/api/cart/--incqty",
+        `${url}/cart/--incqty`,
         { qty, productid },
         {
           headers: {
@@ -234,7 +235,7 @@ const StateContext = ({ children }) => {
       phoneNumber
     ) {
       const api = await axios.post(
-        `http://localhost:1000/api/address/addaddress`,
+        `${url}/address/addaddress`,
         { fullname, address, city, state, country, pincode, phoneNumber },
         {
           headers: {
@@ -253,7 +254,7 @@ const StateContext = ({ children }) => {
   // get address
   const getUserAddress = async () => {
     const api = await axios.get(
-      `http://localhost:1000/api/address/getUserAddress`,
+     `${url}/address/getUserAddress`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -301,7 +302,7 @@ const StateContext = ({ children }) => {
 
   const GetuserOrder = async () => {
     try {
-      const api = await axios.get(`http://localhost:1000/api/payment/userorder`, {
+      const api = await axios.get(`${url}/payment/userorder`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -337,7 +338,7 @@ const StateContext = ({ children }) => {
 
 const GetuserProfile = async () => {
   try {
-    const api = await axios.get(`http://localhost:1000/api/user/profile`, {
+    const api = await axios.get(`${url}/user/profile`, {
       headers: {
         "Content-Type": "application/json",
       },

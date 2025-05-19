@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 const GetAllProducts = () => {
   const { products } = useContext(ContextProvider);
   const [localProducts, setLocalProducts] = useState([]);
+const url ="https://mernstack1stproject-7.onrender.com/api";
 
   useEffect(() => {
     setLocalProducts(products); // sync with context initially
@@ -15,7 +16,7 @@ const GetAllProducts = () => {
     try {
       if (!id) return toast.error("ID not found");
 
-      const res = await axios.delete(`http://localhost:1000/api/product/${id}`);
+      const res = await axios.delete(`${url}/product/${id}`);
       if (res.data.delete === true) {
         toast.success("Deleted successfully");
         setLocalProducts(prev => prev.filter(prod => prod._id !== id)); // remove from local state

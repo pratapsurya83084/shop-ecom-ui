@@ -4,10 +4,12 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 const AdminLogin = ({ isOpen, onClose }) => {
+
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+    const url ="https://mernstack1stproject-7.onrender.com/api" 
 const navigate = useNavigate();
   if (!isOpen) return null;
 
@@ -26,7 +28,7 @@ const navigate = useNavigate();
     }
     try {
         const adminLoginApi = await axios.post(
-          "http://localhost:1000/api/user/adminLogin",
+          `${url}/user/adminLogin`,
           { email, password },
           {
             headers: {

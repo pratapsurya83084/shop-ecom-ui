@@ -7,6 +7,7 @@ const Signup= () => {
     password: '',
   });
 
+  const url ="https://mernstack1stproject-7.onrender.com/api" 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -26,7 +27,7 @@ const Signup= () => {
 
   try {
     // Send form data to the backend
-    const response = await axios.post('http://localhost:1000/api/user/register', formData, {
+    const response = await axios.post(`${url}/user/register`, formData, {
       headers: {
         'Content-Type': 'application/json',
       },

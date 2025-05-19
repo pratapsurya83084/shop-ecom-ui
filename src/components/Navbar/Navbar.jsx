@@ -19,7 +19,7 @@ import ContextProvider from "../context/ContextProvider";
 const Navbar = ({ handleOrderPopup }) => {
   const [showModal, setShowModal] = useState(false);
   const { GetUserCart, cart } = useContext(ContextProvider);
-
+   const url ="https://mernstack1stproject-7.onrender.com/api" 
   // console.log("cart length :",cart );
 
   // console.log("get cart :",cart == null || cart.length == 0 ? "0" : cart.length);
@@ -48,7 +48,7 @@ const Navbar = ({ handleOrderPopup }) => {
   const googlehandleSignOut = async () => {
     try {
       const logoutUser = await axios.post(
-        "http://localhost:1000/api/user/googleLogout",
+        `${url}/user/googleLogout`,
         {},
         { withCredentials: true }
       );
@@ -80,7 +80,7 @@ const Navbar = ({ handleOrderPopup }) => {
   const FormhandleSignOut = async () => {
     try {
       const logoutUser = await axios.post(
-        "http://localhost:1000/api/user/formLogout",
+         `${url}/user/formLogout`,
         {},
         { withCredentials: true }
       );

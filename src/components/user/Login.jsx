@@ -15,6 +15,7 @@ const Login = () => {
   //google login
 
 const [googlCreadential,setGoogleLoginCreadential]=useState();
+const url ="https://mernstack1stproject-7.onrender.com/api" 
 let navigate = useNavigate();
 const Formtoken = Cookies.get("AuthToken") 
 // || Cookies.get("googleAuthToken");
@@ -39,7 +40,7 @@ const googlAuthToken = Cookies.get("googleAuthToken");
       const googleAuth = async () => {
         try {
           const req = await axios.post(
-            "http://localhost:1000/api/user/google/auth",
+           `${url}/user/google/auth`,
             { googleToken }, // Make sure to send the token properly
             {
               headers: {
@@ -95,7 +96,7 @@ const googlAuthToken = Cookies.get("googleAuthToken");
       }
       try {
         const req = await axios.post(
-          "http://localhost:1000/api/user/login",
+         `${url}/user/login`,
           formData, // Make sure to send the token properly
           {
             headers: {

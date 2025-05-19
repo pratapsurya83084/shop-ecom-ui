@@ -14,7 +14,7 @@ const UserProfile = () => {
   const [googleProfile, setGoogleprofile] = useState();
   const navigate = useNavigate();
   // console.log(googleProfile);
-
+const url ="https://mernstack1stproject-7.onrender.com/api" 
   useEffect(() => {
     async function getProfile() {
       const getProfile = await GetuserProfile();
@@ -37,7 +37,7 @@ const UserProfile = () => {
 
       try {
         const api = await axios.get(
-          `http://localhost:1000/api/user/googleprofile`,
+          `${url}/user/googleprofile`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -60,12 +60,12 @@ const UserProfile = () => {
   const FormhandleSignOut = async () => {
     try {
       const logoutUser = await axios.post(
-        "http://localhost:1000/api/user/formLogout",
+        `${url}/user/formLogout`,
         {},
         { withCredentials: true }
       );
       const logoutUserGoogle = await axios.post(
-        "http://localhost:1000/api/user/googleLogout",
+       `${url}/user/googleLogout`,
         {},
         { withCredentials: true }
       );

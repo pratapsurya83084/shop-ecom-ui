@@ -4,6 +4,7 @@ import { Toast } from "@chakra-ui/react";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 const AddProduct = () => {
+   const url ="https://mernstack1stproject-7.onrender.com/api" 
   const [newProduct, setProducts] = useState({
     title: "",
     description: "",
@@ -30,7 +31,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:1000/api/product/addproducts",
+        `${url}/product/addproducts`,
         newProduct,
         {
           headers: {
